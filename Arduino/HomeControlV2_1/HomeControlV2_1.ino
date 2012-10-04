@@ -4,7 +4,7 @@
  *
  *  Control remote plugs, get temperatures and control LCD over serial interface
  *
- *  (C) 2012 by Stefan Huber (stefanhuber@sbg.at)
+ *  (C) 2012 by Stefan Huber
  *********************************************************************************/
 
 /**

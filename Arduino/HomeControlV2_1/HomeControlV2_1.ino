@@ -8,28 +8,23 @@
  *********************************************************************************/
 
 /**
- * *
- * Gleichzeitig Daten an Display senden?
+ * SERIAL TRANSFER PROTOCOL: 
+ * -------------------------
  * 
- * So auf die Art: Wenn das erste incoming Byte 0 ist, dann wird Display geupdated mit Daten aus folgenden bytes
+ * first byte zero -> send to LCD
+ * 					-> following bytes sent to LCD as message
  * 
- * wenn das erste byte 1 ist, ist das zweite byte der fernbedienungs-code
+ * first byte one -> handle Remote
+ * 					-> 2nd byte: plug ID (A,B,C,D..)
+ * 					-> 3rd byte: plug status (off 0/ on 1)
+ * 					-> following bytes sent to LCD as message
  * 
- * webb das erste byte 2 ist, ist das zweite byte die nummer des temp-sensors
- * 
- * Werte byte 2:
- * 
- * (wenn byte 1 == 1)
- * byte 2:
- * A, B, C, D, E, F, G ....
- * byte 3: 
- * 1, 0 (on, off)
- * 
- * (wenn byte 1 == 2)
- * 1 : Temp sensor 1
- * 2 : Temp sensor 2
+ * first byte two -> handle temp sensor
+ * 					-> 2nd byte: temp sensor nr (0,1..)
+ * 					-> following bytes sent to LCD as message
  */
 
+#include <aLM335.h>
 #include <RCSwitch.h>
 #include <LiquidCrystal.h>
 
@@ -48,11 +43,12 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.write("       by sHuber");
   lcd.setCursor(0, 0);
+  
+  aLM335 tempsensor (A0, 4 );  //TODO maybe this has to go into LOOP method
 
-  pinMode(3, OUTPUT);  
+  pinMode(3, OUTPUT);
   mySwitch.enableTransmit(3);
 }
-
 
 void loop()
 {
@@ -60,42 +56,64 @@ void loop()
     delay(100);
     readToBuffer();
 
-    int type = bufferedInput[0]; //1 -> plug, 2 -> temp sensor
+    int type = bufferedInput[0];
 
-    if(type == 1){
-      int plugId = bufferedInput[1]; // A, B, C, D
-      int isEnabled = bufferedInput[2]; // 1 is true, 0 is false
-      int plugNr = 0;
-      switch(plugId){
-      case 'A':
-      case 'a':
-        plugNr = 1; 
-        break;
-      case 'B':
-      case 'b':
-        plugNr = 2; 
-        break;
-      case 'C':
-      case 'c':
-        plugNr = 3; 
-        break;
-      case 'D':
-      case 'd':
-        plugNr = 4; 
-        break;
-      default:
-        break;
-      }
-      if(isEnabled == 1){
-        mySwitch.switchOn("11111", plugNr); 
-      } 
-      else{
-        mySwitch.switchOff("11111", plugNr);
-      }
-      writeToLcd(3);
+    if(type == 0){
+    	// direct write to LCD
+    	writeToLcd(1);
     }
-          Serial.println("Finished");
+    else if(type == 1){
+    	// handle remote plug
+    	handlePlug();
+    } else if (type == 2){
+    	// handle temp sensor
+    	handleTemp();
+    }
+      
   }
+}
+
+void handleTemp(){
+	int tempSensorId = bufferedInput[1];
+	
+	 writeToLcd(2);
+	 Serial.println(tempsensor.getCelsius()); 
+	// handle temp sensor and give value back 
+}
+
+void handlePlug(){
+	
+    int plugId = bufferedInput[1]; // A, B, C, D
+    int isEnabled = bufferedInput[2]; // 1 is true, 0 is false
+    int plugNr = 0;
+    switch(plugId){
+    case 'A':
+    case 'a':
+      plugNr = 1; 
+      break;
+    case 'B':
+    case 'b':
+      plugNr = 2; 
+      break;
+    case 'C':
+    case 'c':
+      plugNr = 3; 
+      break;
+    case 'D':
+    case 'd':
+      plugNr = 4; 
+      break;
+    default:
+      break;
+    }
+    if(isEnabled == 1){
+      mySwitch.switchOn("11111", plugNr); 
+    } 
+    else{
+      mySwitch.switchOff("11111", plugNr);
+    }
+    writeToLcd(3);
+	Serial.println("Finished");
 }
 
 // Buffer methods
@@ -148,10 +166,6 @@ void writeToLcd(int offset){
 void clearBuffer()
 {
   for (inputCounter=0;inputCounter<150;inputCounter++) {
-    bufferedInput[inputCounter] = '\0';
+	  bufferedInput[inputCounter] = '\0';
   }
 }
-
-
-
-

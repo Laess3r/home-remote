@@ -33,7 +33,6 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 int inputCounter;
 char bufferedInput[200];
 int col;
-//todo temp sensor library
 
 void setup() {
   Serial.begin(9600);

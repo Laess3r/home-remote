@@ -16,5 +16,8 @@
     <string name="clear">Clear states</string>
     <string name="password">Password</string>
     <string name="user">Username</string>
+    <string name="temps">Temperatures</string>
+    <string name="tempA">n/a</string>
+    <string name="tempB">n/a</string>
 
 </resources>

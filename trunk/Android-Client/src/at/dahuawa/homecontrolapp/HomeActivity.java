@@ -42,6 +42,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.dahuawa.homecontrolapp.model.Plug;
+import at.dahuawa.homecontrolapp.model.TempSensor;
 import at.dahuawa.homecontrolsimple.R;
 
 /**
@@ -52,6 +53,7 @@ import at.dahuawa.homecontrolsimple.R;
 public class HomeActivity extends Activity {
 
 	private static final String PATH_TO_PLUG = "/HomeBase/plug/";
+	private static final String PATH_TO_TEMPSENSOR = "/HomeBase/tempsensor/";
 
 	TextView textInput;
 
@@ -65,7 +67,11 @@ public class HomeActivity extends Activity {
 	Switch button_B;
 	Switch button_C;
 	Switch button_D;
-
+	
+	TextView tempA;
+	TextView tempB;
+	
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,18 +83,20 @@ public class HomeActivity extends Activity {
 		button_B = (Switch) findViewById(R.id.buttonB);
 		button_C = (Switch) findViewById(R.id.buttonC);
 		button_D = (Switch) findViewById(R.id.buttonD);
+		tempA    = (TextView) findViewById(R.id.tempA);
+		tempB    = (TextView) findViewById(R.id.tempB);
 		setButtonListeners();
 		loadSettings();
 		setServerInfoMessage();
 		resetAllButtons();
-		updatePlugs();
+		updateAll();
 	}
 
 	@Override
 	public void onRestart() {
 		super.onRestart();
 
-		updatePlugs();
+		updateAll();
 	}
 
 	private void setServerInfoMessage() {
@@ -106,7 +114,7 @@ public class HomeActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.update:
-			updatePlugs();
+			updateAll();
 			break;
 
 		case R.id.clear:
@@ -235,6 +243,13 @@ public class HomeActivity extends Activity {
 		} else {
 			handleSinglePlugResponse(response);
 		}
+		
+		
+		if (response.startsWith("{\"tempSensor\":[{\"")) {
+			handleArrayTempSensorResponse(response);
+		} else {
+			handleSingleTempSensorResponse(response);
+		}
 	}
 
 	public void handleArrayPlugResponse(String arrayResponse) {
@@ -245,24 +260,60 @@ public class HomeActivity extends Activity {
 			JSONArray array = json.getJSONArray("plug");
 
 			for (int i = 0; i < array.length(); i++) {
-				handleSingleResponse(array.getJSONObject(i));
+				handleSinglePlugResponse(array.getJSONObject(i));
 			}
 		} catch (Exception e) {
 			toast("ERROR: Could not read array response! (l:187)");
+		}
+	}
+	
+	public void handleArrayTempSensorResponse(String arrayResponse) {
+
+		try {
+			JSONObject json = new JSONObject(arrayResponse);
+
+			JSONArray array = json.getJSONArray("tempSensor");
+
+			for (int i = 0; i < array.length(); i++) {
+				handleSingleTempSensorResponse(array.getJSONObject(i));
+			}
+		} catch (Exception e) {
+			toast("ERROR: Could not read array response!");
+		}
+	}
+	
+	public void handleSingleTempSensorResponse(String singleResponse) {
+		try {
+			JSONObject jso = new JSONObject(singleResponse);
+			handleSingleTempSensorResponse(jso);
+
+		} catch (Exception e) {
+			//toast("ERROR: Could not read single response!");
 		}
 	}
 
 	public void handleSinglePlugResponse(String singleResponse) {
 		try {
 			JSONObject jso = new JSONObject(singleResponse);
-			handleSingleResponse(jso);
+			handleSinglePlugResponse(jso);
 
 		} catch (Exception e) {
-			toast("ERROR: Could not read single response! (l:216)");
+			//toast("ERROR: Could not read single response! (l:216)");
 		}
 	}
 
-	private void handleSingleResponse(JSONObject jso) throws JSONException {
+	private void handleSingleTempSensorResponse(JSONObject jso) throws JSONException {
+
+		char id = (char) Integer.parseInt(jso.getString("id"));
+		String temp = jso.getString("tempValue");
+		String name = jso.getString("name");
+
+		TempSensor received = new TempSensor(id, name, Float.parseFloat(temp));
+
+		updateTemp(received);
+	}
+
+	private void handleSinglePlugResponse(JSONObject jso) throws JSONException {
 
 		char id = (char) Integer.parseInt(jso.getString("id"));
 		boolean enabled = jso.getBoolean("enabled");
@@ -301,6 +352,22 @@ public class HomeActivity extends Activity {
 			break;
 		}
 	}
+	
+	
+	private void updateTemp(TempSensor received) {
+		
+		switch (received.getId()) {
+		case 'A':
+			tempA.setText(received.getName()+":						 "+received.getTempValue()+"°C");
+			break;
+		case 'B':
+			tempB.setText(received.getName()+":						   "+received.getTempValue()+"°C");
+			break;
+		default:
+			break;
+		}
+		
+	}
 
 	private void resetAllButtons() {
 
@@ -319,6 +386,9 @@ public class HomeActivity extends Activity {
 		button_D.setText("n/a");
 		button_D.setChecked(false);
 		button_D.setEnabled(false);
+		
+		tempA.setText("n/a");
+		tempB.setText("n/a");
 	}
 
 	// ------------------ GET AND POST METHODS -----------------------
@@ -340,8 +410,14 @@ public class HomeActivity extends Activity {
 		wst.execute(new String[] { postUrl });
 	}
 
-	public void updatePlugs() {
+	public void updateAll() {
 
+		updateAllPlugs();
+		updateTempSensors();
+
+	}
+	
+	public void updateAllPlugs(){
 		String allPlugsUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_PLUG + "all";
 
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting plugs from server ...");
@@ -349,6 +425,15 @@ public class HomeActivity extends Activity {
 		wst.execute(new String[] { allPlugsUrl });
 	}
 
+	public void updateTempSensors() {
+
+		String allTempsUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_TEMPSENSOR + "all";
+
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting plugs from server ...");
+
+		wst.execute(new String[] { allTempsUrl });
+	}
+	
 	// ---- SAVE AND LOAD CONNECTION SETTINGS ----
 
 	private void saveSettings() {

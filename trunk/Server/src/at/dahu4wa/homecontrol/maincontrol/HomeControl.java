@@ -4,10 +4,11 @@ import gnu.io.SerialPort;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import at.dahu4wa.homecontrol.model.Plug;
+import at.dahu4wa.homecontrol.model.TempSensor;
 import at.dahu4wa.homecontrol.serialcommunication.SerialCommUtils;
 import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
 
@@ -16,17 +17,9 @@ import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
  * 
  * TODO Push the plugs into a h2 database
  * 
- * TODO Security
- * 
  * @author Stefan Huber
  */
 public class HomeControl {
-
-	/*
-	 * Windows: "COM5" 
-	 * Linux: "/dev/ttyUSB0" 
-	 */
-	private final static String SERIAL_PORT_NAME = "/dev/ttyUSB0";
 
 	private static SerialPort serialPort;
 	private static OutputStream serialOutStream;
@@ -37,7 +30,10 @@ public class HomeControl {
 	private static Plug PLUG_C = new Plug('C', "E-Piano", false);
 	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
 
-	private boolean arduinoAnswered = false;
+	private static TempSensor SENSOR_A = new TempSensor('A', "Innenraum", 0);
+	private static TempSensor SENSOR_B = new TempSensor('B', "Draussen", 0);
+
+	private boolean updateFinished = false;
 
 	public HomeControl() {
 		init();
@@ -53,16 +49,12 @@ public class HomeControl {
 	public Plug getPlugById(char plugId) {
 		switch (plugId) {
 		case 'A':
-			// case 'a':
 			return PLUG_A;
 		case 'B':
-			// case 'b':
 			return PLUG_B;
 		case 'C':
-			// case 'c':
 			return PLUG_C;
 		case 'D':
-			// case 'd':
 			return PLUG_D;
 		default:
 			return null;
@@ -70,13 +62,7 @@ public class HomeControl {
 	}
 
 	public List<Plug> getAllPlugs() {
-		List<Plug> allPlugs = new ArrayList<Plug>();
-
-		allPlugs.add(PLUG_A);
-		allPlugs.add(PLUG_B);
-		allPlugs.add(PLUG_C);
-		allPlugs.add(PLUG_D);
-		return allPlugs;
+		return Arrays.asList(PLUG_A, PLUG_B, PLUG_C, PLUG_D);
 	}
 
 	/**
@@ -98,12 +84,24 @@ public class HomeControl {
 		try {
 
 			serialCommUtils = new SerialCommUtils();
-			serialPort = serialCommUtils.initialize(SERIAL_PORT_NAME);
+			serialPort = serialCommUtils.initialize(OSDetector.getSerialPort());
 			serialCommUtils.registerEventListener(serialPort, new SerialReaderCallback() {
 
 				@Override
 				public void onFinish(String incomingMessage) {
-					arduinoAnswered = true;
+
+					if (incomingMessage.startsWith("X")) {
+						String[] splitTemp = incomingMessage.split("T");
+						if (splitTemp[1].startsWith("A"))
+							SENSOR_A.setTempValue(Float.parseFloat(splitTemp[1].substring(1)));
+						if (splitTemp[2].startsWith("B"))
+							SENSOR_B.setTempValue(Float.parseFloat(splitTemp[2].substring(1)));
+					} else if (incomingMessage.startsWith("TA")) {
+						SENSOR_A.setTempValue(Float.parseFloat(incomingMessage.substring(2)));
+					} else if (incomingMessage.startsWith("TB")) {
+						SENSOR_B.setTempValue(Float.parseFloat(incomingMessage.substring(2)));
+					}
+					updateFinished = true;
 				}
 			});
 
@@ -137,12 +135,90 @@ public class HomeControl {
 		messageToSend[messageSize - 1] = '\0';
 		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
 
-		long time = System.currentTimeMillis(); // wait 5 seconds or until
-												// arduino finished
-		while (!arduinoAnswered && (System.currentTimeMillis() - time < 5000)) {
+		// wait 5 seconds or until arduino finished
+		long time = System.currentTimeMillis();
+		while (!updateFinished && (System.currentTimeMillis() - time < 5000)) {
 			System.out.print("");
 		}
-		arduinoAnswered = false;
+		updateFinished = false;
 	}
 
+	public TempSensor getTempSensorById(char id) {
+
+		switch (id) {
+		case 'A':
+			updateTempSensor(SENSOR_A);
+			return SENSOR_A;
+		case 'B':
+			updateTempSensor(SENSOR_B);
+			return SENSOR_B;
+		default:
+			return null;
+		}
+	}
+
+	public List<TempSensor> getAllTempSensors() {
+		updateAllTempSensors();
+		return Arrays.asList(SENSOR_A, SENSOR_B);
+	}
+
+	public void updateTempSensor(TempSensor tempSensor) {
+
+		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue();
+
+		byte[] lcdMessage = (msg).getBytes();
+		int messageSize = lcdMessage.length + 3;
+		byte[] messageToSend = new byte[messageSize];
+
+		messageToSend[0] = new Integer(2).byteValue();
+		messageToSend[1] = (byte) tempSensor.getId();
+
+		for (int i = 0; i < lcdMessage.length; i++) {
+			messageToSend[2 + i] = lcdMessage[i];
+		}
+		messageToSend[messageSize - 1] = '\0';
+		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
+
+		long time = System.currentTimeMillis();
+		while (!updateFinished && (System.currentTimeMillis() - time < 5000)) {
+			System.out.print("");
+		}
+		updateFinished = false;
+	}
+
+	public void updateAllTempSensors() {
+		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue();
+		byte[] lcdMessage = (msg).getBytes();
+		int messageSize = lcdMessage.length + 3;
+		byte[] messageToSend = new byte[messageSize];
+
+		messageToSend[0] = new Integer(2).byteValue();
+		messageToSend[1] = (byte) 'X';
+
+		for (int i = 0; i < lcdMessage.length; i++) {
+			messageToSend[2 + i] = lcdMessage[i];
+		}
+		messageToSend[messageSize - 1] = '\0';
+		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
+
+		long time = System.currentTimeMillis();
+		while (!updateFinished && (System.currentTimeMillis() - time < 5000)) {
+			System.out.print("");
+		}
+		updateFinished = false;
+	}
+
+	public void sendTextToLCD(String text) {
+		byte[] lcdMessage = text.getBytes();
+		int messageSize = lcdMessage.length + 2;
+		byte[] messageToSend = new byte[messageSize];
+
+		messageToSend[0] = new Integer(0).byteValue();
+
+		for (int i = 0; i < lcdMessage.length; i++) {
+			messageToSend[1 + i] = lcdMessage[i];
+		}
+		messageToSend[messageSize - 1] = '\0';
+		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
+	}
 }

@@ -25,6 +25,7 @@
  */
 #include <RCSwitch.h>
 #include <LiquidCrystal.h>
+#include <aLM335.h>
 
 RCSwitch mySwitch = RCSwitch();
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
@@ -40,6 +41,9 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.write("       by sHuber");
   lcd.setCursor(0, 0);
+  
+  aLM335 tempA(1,readVcc()); //TODO "5" is reference voltage... adjust!
+  aLM335 tempA(2,readVcc());
 
   pinMode(3, OUTPUT);
   mySwitch.enableTransmit(3);
@@ -47,8 +51,6 @@ void setup() {
 
 void loop()
 {
-  //    aLM335 tempsensorA (A1, 4 ); 
-  //  aLM335 tempsensorB (A2, 4 );
 
   if (Serial.available()) {
     delay(100);
@@ -56,7 +58,7 @@ void loop()
 
     int type = bufferedInput[0];
 
-    if(type == 0){
+    if(type == 0){  //TODO use #DEFINE for this !!! 
       // direct write to LCD
       writeToLcd(1);
     }
@@ -74,28 +76,22 @@ void loop()
 
 void handleTemp(){
   char tempSensorId = bufferedInput[1];
-
-  float temp_in_kelvin_A = analogRead(1) * 0.004882812 * 100;
-  float temp_in_celsius_A = temp_in_kelvin_A - 2.5 - 273.15;
-  float temp_in_kelvin_B = analogRead(2) * 0.004882812 * 100;
-  float temp_in_celsius_B = temp_in_kelvin_B - 2.5 - 273.15;
-
     writeToLcd(2);
 
   switch(tempSensorId){
   case 'A':
     Serial.print("TA");
-    Serial.println(temp_in_celsius_A);
+    Serial.println(tempA.getCelsius());
     break;
   case 'B':
     Serial.print("TB");
-    Serial.println(temp_in_celsius_B);
+    Serial.println(tempB.getCelsius());
     break;
     case 'X':
     Serial.print("XTA");
-    Serial.print(temp_in_celsius_A);
+    Serial.print(tempA.getCelsius());
     Serial.print("TB");
-    Serial.println(temp_in_celsius_B);
+    Serial.println(tempB.getCelsius());
     break;
   default:
     break;
@@ -191,3 +187,30 @@ void clearBuffer()
   }
 }
 
+
+
+long readVcc() {
+  // Read 1.1V reference against AVcc
+  // set the reference to Vcc and the measurement to the internal 1.1V reference
+  #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+    ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+    ADMUX = _BV(MUX5) | _BV(MUX0);
+  #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+    ADMUX = _BV(MUX3) | _BV(MUX2);
+  #else
+    ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #endif  
+ 
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Start conversion
+  while (bit_is_set(ADCSRA,ADSC)); // measuring
+ 
+  uint8_t low  = ADCL; // must read ADCL first - it then locks ADCH  
+  uint8_t high = ADCH; // unlocks both
+ 
+  long result = (high<<8) | low;
+ 
+  result = 1125300L / result; // Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
+  return result; // Vcc in millivolts
+}

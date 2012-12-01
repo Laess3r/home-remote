@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import at.dahu4wa.homecontrol.model.LogEntry;
+import at.dahu4wa.homecontrol.model.LogFile;
 import at.dahu4wa.homecontrol.model.Plug;
 import at.dahu4wa.homecontrol.model.TempSensor;
 import at.dahu4wa.homecontrol.serialcommunication.SerialCommUtils;
@@ -17,10 +19,14 @@ import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
  * 
  * TODO Push the plugs into a h2 database
  * 
+ * TODO Names should be set via client config
+ * 
  * @author Stefan Huber
  */
 public class HomeControl {
 
+	private static LogFile logFile;
+	
 	private static SerialPort serialPort;
 	private static OutputStream serialOutStream;
 	private static SerialCommUtils serialCommUtils;
@@ -76,13 +82,15 @@ public class HomeControl {
 		plugToUpdate.setEnabled(isEnabled);
 
 		updatePlugHw(plugToUpdate);
-
+		logFile.log("Plug "+plugId+" set to: "+isEnabled);
 		return plugToUpdate;
 	}
 
 	public void init() {
 		try {
 
+			logFile = new LogFile();
+			
 			serialCommUtils = new SerialCommUtils();
 			serialPort = serialCommUtils.initialize(OSDetector.getSerialPort());
 			serialCommUtils.registerEventListener(serialPort, new SerialReaderCallback() {
@@ -104,9 +112,9 @@ public class HomeControl {
 					updateFinished = true;
 				}
 			});
-
+			
 			serialOutStream = serialPort.getOutputStream();
-
+			logFile.log("Home Control initialized successfully!");
 			System.out.println("\n == Home Control initialized successfully! ==\n---------------------------------------");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -134,6 +142,8 @@ public class HomeControl {
 		}
 		messageToSend[messageSize - 1] = '\0';
 		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
+		
+		logFile.log(lcdString);
 
 		// wait 5 seconds or until arduino finished
 		long time = System.currentTimeMillis();
@@ -220,5 +230,9 @@ public class HomeControl {
 		}
 		messageToSend[messageSize - 1] = '\0';
 		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
+	}
+
+	public List<LogEntry> getLogEntries() {
+		return logFile.getLogFile();
 	}
 }

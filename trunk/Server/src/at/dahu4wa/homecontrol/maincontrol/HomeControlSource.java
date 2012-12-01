@@ -1,6 +1,6 @@
 package at.dahu4wa.homecontrol.maincontrol;
 
-public final class HomeControlGetter {
+public final class HomeControlSource {
 
 	public static volatile HomeControl homeControl;
 

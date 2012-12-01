@@ -15,7 +15,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 import at.dahu4wa.homecontrol.maincontrol.HomeControl;
-import at.dahu4wa.homecontrol.maincontrol.HomeControlGetter;
+import at.dahu4wa.homecontrol.maincontrol.HomeControlSource;
 import at.dahu4wa.homecontrol.model.Plug;
 
 /**
@@ -26,7 +26,7 @@ import at.dahu4wa.homecontrol.model.Plug;
 @Path("/plug")
 public class PlugResource {
 
-	private final static HomeControl hc = HomeControlGetter.getHomeControl();
+	private final static HomeControl hc = HomeControlSource.getHomeControl();
 	private final static String ID = "id";
 	private final static String ENABLED = "enabled";
 

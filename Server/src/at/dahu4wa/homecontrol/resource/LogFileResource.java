@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -13,11 +12,15 @@ import javax.ws.rs.core.UriInfo;
 
 import at.dahu4wa.homecontrol.maincontrol.HomeControl;
 import at.dahu4wa.homecontrol.maincontrol.HomeControlSource;
-import at.dahu4wa.homecontrol.model.TempSensor;
+import at.dahu4wa.homecontrol.model.LogEntry;
 
-
-@Path("/tempsensor")
-public class TempSensorResource {
+/**
+ * The resource to access the logfile over the web
+ * 
+ * @author Stefan Huber
+ */
+@Path("/log")
+public class LogFileResource {
 
 	private final static HomeControl hc = HomeControlSource.getHomeControl();
 
@@ -27,16 +30,9 @@ public class TempSensorResource {
 	Request request;
 
 	@GET
-	@Path("/{tempSensorId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public TempSensor getTempSensor(@PathParam("tempSensorId") String tempSensorId) {
-		return hc.getTempSensorById(tempSensorId.charAt(0));
-	}
-
-	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<TempSensor> getAllTempSensors() {
-		return hc.getAllTempSensors();
+	public List<LogEntry> getAllLogEntries() {
+		return hc.getLogEntries();
 	}
 }

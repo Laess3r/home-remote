@@ -13,31 +13,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LogEntry {
 
 	private Date timeStamp;
-	private String logEntry;
+	private String text;
 
 	public LogEntry() {
 		this.timeStamp = new Date(System.currentTimeMillis());
-		this.logEntry = "empty";
+		this.text = "empty";
 	}
 	
 	public LogEntry(String logEntry) {
 		this.timeStamp = new Date(System.currentTimeMillis());
-		this.logEntry = logEntry;
+		this.text = logEntry;
 	}
 
 	public Date getTimeStamp() {
 		return timeStamp;
 	}
 
-	public String getLogEntry() {
-		return logEntry;
+	public String getText() {
+		return text;
 	}
 
 	public void setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
-	public void setLogEntry(String logEntry) {
-		this.logEntry = logEntry;
+	public void setText(String logEntry) {
+		this.text = logEntry;
 	}
 }

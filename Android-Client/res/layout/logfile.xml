@@ -23,16 +23,14 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@color/blue" >
+            
+            <TextView
+            android:id="@+id/logtext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:text="empty" />
 
-            <EditText
-                android:id="@+id/log"
-                android:layout_width="wrap_content"
-                android:layout_height="660dp"
-                android:ems="10"
-                android:inputType="text" >
-
-                <requestFocus />
-            </EditText>
         </TableLayout>
     </ScrollView>
 

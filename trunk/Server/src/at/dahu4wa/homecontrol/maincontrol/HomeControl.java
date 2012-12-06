@@ -33,7 +33,7 @@ public class HomeControl {
 
 	private static Plug PLUG_A = new Plug('A', "Entertaiment", false);
 	private static Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
-	private static Plug PLUG_C = new Plug('C', "E-Piano", false);
+	private static Plug PLUG_C = new Plug('C', "Lichterkette", false);
 	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
 
 	private static TempSensor SENSOR_A = new TempSensor('A', "Innenraum", 0);

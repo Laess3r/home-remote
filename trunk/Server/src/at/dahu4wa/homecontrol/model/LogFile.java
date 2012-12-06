@@ -3,14 +3,11 @@ package at.dahu4wa.homecontrol.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Log file object 
  * 
  * @author Stefan Huber
  */
-@XmlRootElement
 public class LogFile {
 
 	final List<LogEntry> logEntries;

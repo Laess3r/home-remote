@@ -37,13 +37,10 @@ void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);
   lcd.clear();
-  lcd.write("HomeControl v2.b");
+  lcd.write("HomeControl v2.c");
   lcd.setCursor(0, 1);
   lcd.write("       by sHuber");
   lcd.setCursor(0, 0);
-  
-  aLM335 tempA(1,readVcc()); //TODO "5" is reference voltage... adjust!
-  aLM335 tempA(2,readVcc());
 
   pinMode(3, OUTPUT);
   mySwitch.enableTransmit(3);
@@ -75,23 +72,27 @@ void loop()
 }
 
 void handleTemp(){
+  
+  aLM335 tempA(1,5); //readVcc()
+  aLM335 tempB(2,5); //readVcc()
+  
   char tempSensorId = bufferedInput[1];
     writeToLcd(2);
 
   switch(tempSensorId){
   case 'A':
     Serial.print("TA");
-    Serial.println(tempA.getCelsius());
+    Serial.println(tempA.getCelsius()-37);
     break;
   case 'B':
     Serial.print("TB");
-    Serial.println(tempB.getCelsius());
+    Serial.println(tempB.getCelsius()-36);
     break;
     case 'X':
     Serial.print("XTA");
-    Serial.print(tempA.getCelsius());
+    Serial.print(tempA.getCelsius()-37);
     Serial.print("TB");
-    Serial.println(tempB.getCelsius());
+    Serial.println(tempB.getCelsius()-36);
     break;
   default:
     break;

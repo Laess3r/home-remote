@@ -67,11 +67,10 @@ public class HomeActivity extends Activity {
 	Switch button_B;
 	Switch button_C;
 	Switch button_D;
-	
+
 	TextView tempA;
 	TextView tempB;
-	
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +82,8 @@ public class HomeActivity extends Activity {
 		button_B = (Switch) findViewById(R.id.buttonB);
 		button_C = (Switch) findViewById(R.id.buttonC);
 		button_D = (Switch) findViewById(R.id.buttonD);
-		tempA    = (TextView) findViewById(R.id.tempA);
-		tempB    = (TextView) findViewById(R.id.tempB);
+		tempA = (TextView) findViewById(R.id.tempA);
+		tempB = (TextView) findViewById(R.id.tempB);
 		setButtonListeners();
 		loadSettings();
 		setServerInfoMessage();
@@ -130,6 +129,12 @@ public class HomeActivity extends Activity {
 			settingsIntent.putExtra("password", PASSWORD);
 
 			startActivityForResult(settingsIntent, 0);
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			break;
+
+		case R.id.log:
+			Intent logIntent = new Intent(this, LogActivity.class);
+			startActivityForResult(logIntent, 0);
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 			break;
 
@@ -243,12 +248,15 @@ public class HomeActivity extends Activity {
 		} else {
 			handleSinglePlugResponse(response);
 		}
-		
-		
+
 		if (response.startsWith("{\"tempSensor\":[{\"")) {
 			handleArrayTempSensorResponse(response);
 		} else {
 			handleSingleTempSensorResponse(response);
+		}
+		
+		if (response.startsWith("{\"tempSensor\":[{\"")) {
+			handleArrayTempSensorResponse(response);
 		}
 	}
 
@@ -266,7 +274,7 @@ public class HomeActivity extends Activity {
 			toast("ERROR: Could not read array response! (l:187)");
 		}
 	}
-	
+
 	public void handleArrayTempSensorResponse(String arrayResponse) {
 
 		try {
@@ -281,14 +289,14 @@ public class HomeActivity extends Activity {
 			toast("ERROR: Could not read array response!");
 		}
 	}
-	
+
 	public void handleSingleTempSensorResponse(String singleResponse) {
 		try {
 			JSONObject jso = new JSONObject(singleResponse);
 			handleSingleTempSensorResponse(jso);
 
 		} catch (Exception e) {
-			//toast("ERROR: Could not read single response!");
+			// toast("ERROR: Could not read single response!");
 		}
 	}
 
@@ -298,7 +306,7 @@ public class HomeActivity extends Activity {
 			handleSinglePlugResponse(jso);
 
 		} catch (Exception e) {
-			//toast("ERROR: Could not read single response! (l:216)");
+			// toast("ERROR: Could not read single response! (l:216)");
 		}
 	}
 
@@ -352,21 +360,20 @@ public class HomeActivity extends Activity {
 			break;
 		}
 	}
-	
-	
+
 	private void updateTemp(TempSensor received) {
-		
+
 		switch (received.getId()) {
 		case 'A':
-			tempA.setText(received.getName()+":						 "+received.getTempValue()+"°C");
+			tempA.setText(received.getName() + ":						 " + received.getTempValue() + "°C");
 			break;
 		case 'B':
-			tempB.setText(received.getName()+":						   "+received.getTempValue()+"°C");
+			tempB.setText(received.getName() + ":						   " + received.getTempValue() + "°C");
 			break;
 		default:
 			break;
 		}
-		
+
 	}
 
 	private void resetAllButtons() {
@@ -386,7 +393,7 @@ public class HomeActivity extends Activity {
 		button_D.setText("n/a");
 		button_D.setChecked(false);
 		button_D.setEnabled(false);
-		
+
 		tempA.setText("n/a");
 		tempB.setText("n/a");
 	}
@@ -416,8 +423,8 @@ public class HomeActivity extends Activity {
 		updateTempSensors();
 
 	}
-	
-	public void updateAllPlugs(){
+
+	public void updateAllPlugs() {
 		String allPlugsUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_PLUG + "all";
 
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting plugs from server ...");
@@ -433,7 +440,7 @@ public class HomeActivity extends Activity {
 
 		wst.execute(new String[] { allTempsUrl });
 	}
-	
+
 	// ---- SAVE AND LOAD CONNECTION SETTINGS ----
 
 	private void saveSettings() {

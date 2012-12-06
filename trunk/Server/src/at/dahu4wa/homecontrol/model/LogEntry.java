@@ -12,9 +12,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class LogEntry {
 
-	final Date timeStamp;
-	final String logEntry;
+	private Date timeStamp;
+	private String logEntry;
 
+	public LogEntry() {
+		this.timeStamp = new Date(System.currentTimeMillis());
+		this.logEntry = "empty";
+	}
+	
 	public LogEntry(String logEntry) {
 		this.timeStamp = new Date(System.currentTimeMillis());
 		this.logEntry = logEntry;
@@ -26,5 +31,13 @@ public class LogEntry {
 
 	public String getLogEntry() {
 		return logEntry;
+	}
+
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public void setLogEntry(String logEntry) {
+		this.logEntry = logEntry;
 	}
 }

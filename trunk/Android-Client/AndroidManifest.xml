@@ -21,6 +21,8 @@
         </activity>
         
         <activity android:name="at.dahuawa.homecontrolapp.SettingsActivity">
+            </activity>
+        <activity android:name="at.dahuawa.homecontrolapp.LogActivity">
         </activity>
         
     </application>

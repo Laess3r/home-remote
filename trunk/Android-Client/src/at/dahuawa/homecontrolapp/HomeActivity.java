@@ -41,6 +41,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.dahuawa.homecontrolapp.model.LogEntry;
+import at.dahuawa.homecontrolapp.model.LogFile;
 import at.dahuawa.homecontrolapp.model.Plug;
 import at.dahuawa.homecontrolapp.model.TempSensor;
 import at.dahuawa.homecontrolsimple.R;
@@ -54,6 +56,7 @@ public class HomeActivity extends Activity {
 
 	private static final String PATH_TO_PLUG = "/HomeBase/plug/";
 	private static final String PATH_TO_TEMPSENSOR = "/HomeBase/tempsensor/";
+	private static final String PATH_TO_LOG = "/HomeBase/log/";
 
 	TextView textInput;
 
@@ -132,12 +135,9 @@ public class HomeActivity extends Activity {
 			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 			break;
 
-		case R.id.log:
-			Intent logIntent = new Intent(this, LogActivity.class);
-			startActivityForResult(logIntent, 0);
-			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+		case R.id.logfile:
+			updateLog();
 			break;
-
 		}
 		return true;
 	}
@@ -254,10 +254,44 @@ public class HomeActivity extends Activity {
 		} else {
 			handleSingleTempSensorResponse(response);
 		}
-		
+
 		if (response.startsWith("{\"tempSensor\":[{\"")) {
 			handleArrayTempSensorResponse(response);
 		}
+
+		if (response.startsWith("{\"logEntry\":[{")) {
+			handleLogFile(response);
+		}
+
+	}
+
+	private void handleLogFile(String response) {
+
+		LogFile logs = new LogFile();
+
+		try {
+			JSONObject json = new JSONObject(response);
+			JSONArray array = json.getJSONArray("logEntry");
+
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject jsonObject = array.getJSONObject(i);
+
+				String message = jsonObject.getString("text");
+				String timestamp = jsonObject.getString("timeStamp");
+
+				logs.getLogFile().add(new LogEntry(message, timestamp));
+			}
+
+		} catch (Exception e) {
+			toast("ERROR: Could not read array response! (l:187)");
+		}
+
+		Intent logIntent = new Intent(this, LogActivity.class);
+
+		logIntent.putExtra("Log", logs);
+
+		startActivityForResult(logIntent, 0);
+		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 	}
 
 	public void handleArrayPlugResponse(String arrayResponse) {
@@ -430,6 +464,14 @@ public class HomeActivity extends Activity {
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting plugs from server ...");
 
 		wst.execute(new String[] { allPlugsUrl });
+	}
+
+	public void updateLog() {
+		String logFileUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_LOG + "all";
+
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, this, "Getting LOGS from server ...");
+
+		wst.execute(new String[] { logFileUrl });
 	}
 
 	public void updateTempSensors() {

@@ -11,6 +11,7 @@
     <string name="ip">Host Ip</string>
     <string name="port">Host Port</string>
     <string name="buttonremote">Control Plugs</string>
+    <string name="motors">Control Motors</string>
     <string name="savesettings">Save settings</string>
     <string name="noIn"> - </string>
     <string name="clear">Clear states</string>
@@ -18,6 +19,7 @@
     <string name="user">Username</string>
     <string name="temps">Temperatures</string>
     <string name="tempA">n/a</string>
+    <string name="log">Server Log</string>
     <string name="tempB">n/a</string>
 
 </resources>

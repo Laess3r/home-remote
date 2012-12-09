@@ -57,6 +57,7 @@ public class HomeActivity extends Activity {
 	private static final String PATH_TO_PLUG = "/HomeBase/plug/";
 	private static final String PATH_TO_TEMPSENSOR = "/HomeBase/tempsensor/";
 	private static final String PATH_TO_LOG = "/HomeBase/log/";
+	private static final String PATH_TO_MUSIC = "/HomeBase/music/";
 
 	TextView textInput;
 
@@ -119,8 +120,17 @@ public class HomeActivity extends Activity {
 			updateAll();
 			break;
 
-		case R.id.clear:
-			resetAllButtons();
+		case R.id.music:
+
+			Intent musicIntent = new Intent(this, MusicActivity.class);
+
+			musicIntent.putExtra("ip", SERVER_IP);
+			musicIntent.putExtra("port", SERVER_PORT);
+
+			startActivityForResult(musicIntent, 1);
+
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
 			break;
 
 		case R.id.settings:
@@ -183,6 +193,19 @@ public class HomeActivity extends Activity {
 			PASSWORD = dataFromSetting.getString("password");
 			saveSettings();
 			setServerInfoMessage();
+		}
+
+		if (resultCode == 2) {
+			Bundle musicData = data.getExtras();
+
+			String url = musicData.getString("url");
+			boolean stopped = musicData.getBoolean("stopped");
+
+			if (stopped) {
+				Toast.makeText(this, "not implemented", Toast.LENGTH_LONG).show();
+			}
+			if(!url.isEmpty())
+			postMusicUrl(url);
 		}
 	}
 
@@ -435,6 +458,20 @@ public class HomeActivity extends Activity {
 	// ------------------ GET AND POST METHODS -----------------------
 
 	@SuppressLint("UseValueOf")
+	public void postMusicUrl(String url) {
+
+		String postUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_MUSIC;
+
+		String postText = "Starting playback...";
+
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, postText);
+
+		wst.addNameValuePair("stream_url", url);
+
+		wst.execute(new String[] { postUrl });
+	}
+
+	@SuppressLint("UseValueOf")
 	public void postPlug(Plug plug) {
 
 		String postUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + PATH_TO_PLUG;
@@ -447,7 +484,6 @@ public class HomeActivity extends Activity {
 		wst.addNameValuePair("name", plug.getName());
 		wst.addNameValuePair("enabled", new Boolean(plug.isEnabled()).toString());
 
-		// the passed String is the URL we will POST to
 		wst.execute(new String[] { postUrl });
 	}
 
@@ -506,7 +542,7 @@ public class HomeActivity extends Activity {
 
 	// ---------------------- WEBSERVICE TASK --------------------
 
-	private class WebServiceTask extends AsyncTask<String, Integer, String> {
+	public class WebServiceTask extends AsyncTask<String, Integer, String> {
 
 		public static final int POST_TASK = 1;
 		public static final int GET_TASK = 2;
@@ -584,7 +620,6 @@ public class HomeActivity extends Activity {
 
 		}
 
-		// Establish connection and socket (data retrieval) timeouts
 		private HttpParams getHttpParams() {
 
 			HttpParams htpp = new BasicHttpParams();
@@ -597,10 +632,7 @@ public class HomeActivity extends Activity {
 
 		private HttpResponse doResponse(String url) {
 
-			// Use our connection and data timeouts as parameters for our
-			// DefaultHttpClient
 			HttpClient httpclient = new DefaultHttpClient(getHttpParams());
-
 			HttpResponse response = null;
 
 			try {

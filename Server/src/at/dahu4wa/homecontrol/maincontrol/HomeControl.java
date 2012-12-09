@@ -4,15 +4,21 @@ import gnu.io.SerialPort;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
 import at.dahu4wa.homecontrol.model.LogEntry;
 import at.dahu4wa.homecontrol.model.LogFile;
+import at.dahu4wa.homecontrol.model.MediaStatus;
 import at.dahu4wa.homecontrol.model.Plug;
 import at.dahu4wa.homecontrol.model.TempSensor;
 import at.dahu4wa.homecontrol.serialcommunication.SerialCommUtils;
 import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
+import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
+import de.hotware.hotsound.audio.player.BasicPlaybackSong;
+import de.hotware.hotsound.audio.player.MusicPlayerException;
+import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 
 /**
  * Main Controller for Home Control
@@ -26,7 +32,7 @@ import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
 public class HomeControl {
 
 	private static LogFile logFile;
-	
+
 	private static SerialPort serialPort;
 	private static OutputStream serialOutStream;
 	private static SerialCommUtils serialCommUtils;
@@ -38,6 +44,8 @@ public class HomeControl {
 
 	private static TempSensor SENSOR_A = new TempSensor('A', "Innenraum", 0);
 	private static TempSensor SENSOR_B = new TempSensor('B', "Draussen", 0);
+
+	private static StreamMusicPlayer player = new StreamMusicPlayer();
 
 	private boolean updateFinished = false;
 
@@ -82,7 +90,7 @@ public class HomeControl {
 		plugToUpdate.setEnabled(isEnabled);
 
 		updatePlugHw(plugToUpdate);
-		logFile.log("Plug "+plugId+" set to: "+isEnabled);
+		logFile.log("Plug " + plugId + " set to: " + isEnabled);
 		return plugToUpdate;
 	}
 
@@ -90,7 +98,7 @@ public class HomeControl {
 		try {
 
 			logFile = new LogFile();
-			
+
 			serialCommUtils = new SerialCommUtils();
 			serialPort = serialCommUtils.initialize(OSDetector.getSerialPort());
 			serialCommUtils.registerEventListener(serialPort, new SerialReaderCallback() {
@@ -112,7 +120,7 @@ public class HomeControl {
 					updateFinished = true;
 				}
 			});
-			
+
 			serialOutStream = serialPort.getOutputStream();
 			logFile.log("Home Control initialized successfully!");
 			System.out.println("\n == Home Control initialized successfully! ==\n---------------------------------------");
@@ -142,7 +150,7 @@ public class HomeControl {
 		}
 		messageToSend[messageSize - 1] = '\0';
 		serialCommUtils.sendToSerialPort(serialOutStream, messageToSend);
-		
+
 		logFile.log(lcdString);
 
 		// wait 5 seconds or until arduino finished
@@ -234,5 +242,41 @@ public class HomeControl {
 
 	public List<LogEntry> getLogEntries() {
 		return logFile.getLogFile();
+	}
+
+	public MediaStatus getStreamStatus() {
+		return new MediaStatus(!player.isStopped(), "");
+	}
+
+	public MediaStatus stopPlaying() {
+
+		if (player.isStopped()) {
+			String information = "Player has already been stopped!";
+			sendTextToLCD(information);
+			return new MediaStatus(false, information);
+		}
+		try {
+			player.stop();
+		} catch (MusicPlayerException e) {
+			sendTextToLCD(e.getMessage());
+			return new MediaStatus(false, e.getMessage());
+		}
+		String information = "Player has been stopped";
+		sendTextToLCD(information);
+		return new MediaStatus(false, information);
+	}
+
+	public MediaStatus setStreamUrl(String url) {
+		try {
+			player.insert(new BasicPlaybackSong(new URL(url)), new BasicPlaybackAudioDevice());
+			player.start();
+		} catch (Exception e) {
+			sendTextToLCD(e.getMessage());
+			System.out.println(e);
+			return new MediaStatus(false, e.getMessage());
+		}
+
+		sendTextToLCD(url);
+		return new MediaStatus(true, "Now playing...");
 	}
 }

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="at.dahuawa.homecontrolapp.SettingsActivity">
+        <activity android:name="at.dahuawa.homecontrolapp.MusicActivity">
             </activity>
         <activity android:name="at.dahuawa.homecontrolapp.LogActivity">
         </activity>

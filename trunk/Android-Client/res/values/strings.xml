@@ -19,7 +19,11 @@
     <string name="user">Username</string>
     <string name="temps">Temperatures</string>
     <string name="tempA">n/a</string>
-    <string name="log">Server Log</string>
+    <string name="log">Server log</string>
+     <string name="music">Play music</string>
     <string name="tempB">n/a</string>
+    <string name="sendUrl">Send and start playing</string>
+    <string name="stopUrl">Stop playing</string>
+    <string name="url">URL:</string>
 
 </resources>

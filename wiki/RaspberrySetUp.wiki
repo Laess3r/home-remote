@@ -26,7 +26,8 @@ rm apache-tomcat-7.0.34.tar.gz
 cd apache-tomcat-7.0.34/conf
 vi tomcat-users.xml
 }}}
-  * Add a user
+  * Add a new tomcat user
+
 Now you have to add a user at the "tomcat-users" tag like this:
 {{{
    <user username="pi" password="raspberry" roles="manager-gui"/>

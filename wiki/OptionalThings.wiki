@@ -1,0 +1,4 @@
+= Optional things for your raspberry =
+
+== Pyload downloader on Raspi ==
+http://jankarres.de/2012/08/raspberry-pi-downloadmanager-pyload-installieren/

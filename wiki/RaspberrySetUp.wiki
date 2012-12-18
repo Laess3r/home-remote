@@ -14,5 +14,6 @@
 {{{   
    apt-get install arduino openjdk-6-jdk samba vftpd
 }}}
+{{{
    ln -s /dev/ttyACM0 /dev/ttyUSB0
-{{{   
+}}}   

@@ -5,6 +5,16 @@
   * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])
   * Install it using dd / Win32DiskImager (found on raspberry dl page)
   * Make the first SetUp of Raspberry (Overclocking it is recommended)
+  * Then Run the following lines of code:
+
+{{{
+   sudo -s
+   apt-get update && apt-get upgrade
+   apt-get install arduino openjdk-6-jdk samba vftpd
+   ln -s /dev/ttyACM0 /dev/ttyUSB0
+
+}}}
+
 
 
 

@@ -2,3 +2,8 @@
 
 == Pyload downloader on Raspi ==
 http://jankarres.de/2012/08/raspberry-pi-downloadmanager-pyload-installieren/
+
+== Coming soon == 
+
+  * Setting up a Network HDD (Samba)
+  * Auto mounting a HDD using fstab

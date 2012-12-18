@@ -10,3 +10,8 @@ http://jankarres.de/2012/08/raspberry-pi-downloadmanager-pyload-installieren/
 
   * Setting up a Network HDD (Samba)
   * Auto mounting a HDD using fstab
+
+=== change ssh port ===
+
+sudo vim /etc/ssh/sshd_conf
+There change the "port" and reboot

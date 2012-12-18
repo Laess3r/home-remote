@@ -1,6 +1,6 @@
 = Optional things for your raspberry =
 
-sudo raspi-config let you start the initial config at every time
+*sudo raspi-config* let you start the initial config at every time
 
 == Pyload downloader on Raspi ==
 Let your little embedded system download your files.

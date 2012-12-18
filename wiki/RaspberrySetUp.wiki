@@ -38,5 +38,3 @@ Now you have to add a user at the "tomcat-users" tag like this:
    cd ../bin
    sudo sh startup.sh
 }}}
-
-TODO: mount and configure samba 

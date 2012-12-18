@@ -1,5 +1,3 @@
-#Complete SetUp for Raspi
-
 = Needed steps =
 
   * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])

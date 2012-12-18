@@ -3,8 +3,8 @@
 = Needed steps =
 
   * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])
-  * Install it using dd / Win32DiskImager (found on raspberry dl page)
-  * Make the first SetUp of Raspberry (Overclocking it is recommended)
+  * Install it using dd / Win32 diskimager (found on raspberry dl page)
+  * Make the first setup of Raspberry (Overclocking it is recommended)
   * Then Run the following lines of code:
 
 {{{

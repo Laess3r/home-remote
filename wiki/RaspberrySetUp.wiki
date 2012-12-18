@@ -1,0 +1,14 @@
+#Complete SetUp for Raspi
+
+= Needed steps =
+
+  * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])
+  * Install it using dd / Win32DiskImager (found on raspberry dl page)
+  * Make the first SetUp of Raspberry (Overclocking it is recommended)
+
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages

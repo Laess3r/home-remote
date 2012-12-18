@@ -1,5 +1,5 @@
 #labels Featured
-= Needed steps =
+= Initial raspberry setup =
 
   * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])
   * Install it using dd / Win32 diskimager (found on raspberry dl page)
@@ -19,6 +19,14 @@
    ln -s /dev/ttyACM0 /dev/ttyUSB0
 }}}   
 
-Then install the tomcat server using this instruction:
+= Installing Tomcat =
+
+{{{
+sudo -s
+wget http://mirrors.axint.net/apache/tomcat/tomcat-7/v7.0.34/bin/apache-tomcat-7.0.34.tar.gz
+tar xzf apache-tomcat-7.0.34.tar.gz
+cd apache-tomcat-7.0.34/conf
+vi tomcat-users.xml
+}}}
 
 [http://macgyverdev.blogspot.co.at/2012/08/raspberry-pi-how-to-get-ssh-and-tomcat.html]

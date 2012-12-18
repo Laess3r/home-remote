@@ -17,3 +17,7 @@
 {{{
    ln -s /dev/ttyACM0 /dev/ttyUSB0
 }}}   
+
+Then install the tomcat server using this instruction:
+
+[http://macgyverdev.blogspot.co.at/2012/08/raspberry-pi-how-to-get-ssh-and-tomcat.html]

@@ -21,12 +21,21 @@
 
 = Installing Tomcat =
 
+  * Download and unpack tomcat
 {{{
 sudo -s
 wget http://mirrors.axint.net/apache/tomcat/tomcat-7/v7.0.34/bin/apache-tomcat-7.0.34.tar.gz
 tar xzf apache-tomcat-7.0.34.tar.gz
+rm apache-tomcat-7.0.34.tar.gz
 cd apache-tomcat-7.0.34/conf
 vi tomcat-users.xml
 }}}
+  * Add a user
+Now you have to add a user at the <tomcat-users> section like this:
+<user username="pi" password="raspberry" roles="manager-gui"/>
 
-[http://macgyverdev.blogspot.co.at/2012/08/raspberry-pi-how-to-get-ssh-and-tomcat.html]
+  * Run tomcat
+{{{
+   cd ../bin
+   sudo sh startup.sh
+}}}

@@ -39,9 +39,4 @@ Now you have to add a user at the "tomcat-users" tag like this:
    sudo sh startup.sh
 }}}
 
-TODO: run tomcat on startup
 TODO: mount and configure samba 
-
-= Optional =
-== PyLoad downloader on Raspi ==
-http://pyload.org/configuration

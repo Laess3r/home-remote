@@ -6,6 +6,8 @@
   * Make the first setup of Raspberry (Overclocking it is recommended)
   * Then Run the following lines of code:
 
+They install arduino drivers, map the port to a supported name, installs java, a ftp client and samba
+
 {{{
    sudo -s
 }}}

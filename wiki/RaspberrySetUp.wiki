@@ -36,3 +36,5 @@ vi tomcat-users.xml
    cd ../bin
    sudo sh startup.sh
 }}}
+
+TODO how to auto-run tomcat on startup

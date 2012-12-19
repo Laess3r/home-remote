@@ -21,6 +21,7 @@ ln -s /dev/ttyACM0 /dev/ttyUSB0
   * Download and unpack tomcat
 {{{
 sudo -s
+cd /etc/
 wget http://mirrors.axint.net/apache/tomcat/tomcat-7/v7.0.34/bin/apache-tomcat-7.0.34.tar.gz
 tar xzf apache-tomcat-7.0.34.tar.gz
 rm apache-tomcat-7.0.34.tar.gz

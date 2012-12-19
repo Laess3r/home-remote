@@ -14,5 +14,7 @@ http://jankarres.de/2012/08/raspberry-pi-downloadmanager-pyload-installieren/
 
 === change ssh port ===
 
+{{{
 sudo vim /etc/ssh/sshd_conf
+}}}
 There change the "port" and reboot

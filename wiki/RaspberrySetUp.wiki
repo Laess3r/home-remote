@@ -12,7 +12,7 @@ They install arduino drivers, map the port to a supported name, installs java, a
 {{{
 sudo -s
 apt-get update && apt-get upgrade
-apt-get install arduino openjdk-6-jdk samba vftpd vim
+apt-get install arduino openjdk-6-jdk samba vim
 ln -s /dev/ttyACM0 /dev/ttyUSB0
 }}}   
 

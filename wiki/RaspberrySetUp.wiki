@@ -32,10 +32,14 @@ vi tomcat-users.xml
 {{{
    <user username="pi" password="raspberry" roles="manager-gui"/>
 }}}
+
+
+*TODO how to copy war file to server*
+
   * Run tomcat
 {{{
    cd ../bin
    sudo sh startup.sh
 }}}
 
-TODO how to auto-run tomcat on startup
+*TODO how to auto-run tomcat on startup*

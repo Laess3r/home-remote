@@ -37,7 +37,7 @@ void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);
   lcd.clear();
-  lcd.write("HomeControl v2.c");
+  lcd.write("HomeControl v2.d");
   lcd.setCursor(0, 1);
   lcd.write("       by sHuber");
   lcd.setCursor(0, 0);
@@ -104,31 +104,46 @@ void handlePlug(){
   int plugId = bufferedInput[1]; // A, B, C, D
   int isEnabled = bufferedInput[2]; // 1 is true, 0 is false
   int plugNr = 0;
+  char* prefix;
   switch(plugId){
   case 'A':
   case 'a':
     plugNr = 1; 
+    prefix = "11111";
     break;
   case 'B':
   case 'b':
     plugNr = 2; 
+    prefix = "11111";
     break;
   case 'C':
   case 'c':
     plugNr = 3; 
+    prefix = "11111";
     break;
   case 'D':
   case 'd':
     plugNr = 4; 
+    prefix = "11111";
+    break;
+  case 'E':
+  case 'e':
+    plugNr = 5; 
+    prefix = "11111";
+    break;
+  case 'X':
+  case 'x':
+    plugNr = 1; 
+    prefix = "11110";
     break;
   default:
     break;
   }
   if(isEnabled == 1){
-    mySwitch.switchOn("11111", plugNr); 
+    mySwitch.switchOn(prefix, plugNr); 
   } 
   else{
-    mySwitch.switchOff("11111", plugNr);
+    mySwitch.switchOff(prefix, plugNr);
   }
   writeToLcd(3);
   Serial.println("Plug updated");
@@ -189,7 +204,7 @@ void clearBuffer()
 }
 
 
-
+/**
 long readVcc() {
   // Read 1.1V reference against AVcc
   // set the reference to Vcc and the measurement to the internal 1.1V reference
@@ -215,3 +230,4 @@ long readVcc() {
   result = 1125300L / result; // Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
   return result; // Vcc in millivolts
 }
+**/

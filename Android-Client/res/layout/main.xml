@@ -2,13 +2,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/blue" >
-
+
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blue"
         android:columnCount="1"
-        android:rowCount="17" >
+        android:rowCount="20" >
 
         <TextView
             android:id="@+id/title"
@@ -120,6 +120,48 @@
             android:layout_row="9"
             android:background="@color/white" />
 
+        <Switch
+            android:id="@+id/buttonE"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_row="10"
+            android:textSize="@dimen/text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="11"
+            android:background="@color/white" />
+
+        <Switch
+            android:id="@+id/buttonX"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_row="12"
+            android:textSize="@dimen/text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="13"
+            android:background="@color/white" />
+
         <TextView
             android:id="@+id/tempTitle"
             android:layout_width="wrap_content"
@@ -130,7 +172,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_row="10"
+            android:layout_row="14"
             android:text="@string/temps"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/head"
@@ -142,9 +184,9 @@
             android:layout_height="1dp"
             android:layout_column="0"
             android:layout_columnSpan="2"
-            android:layout_row="11"
+            android:layout_row="15"
             android:background="@color/white" />
-
+
         <TextView
             android:id="@+id/tempA"
             android:layout_width="match_parent"
@@ -155,7 +197,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:layout_row="12"
+            android:layout_row="16"
             android:text="@string/tempA"
             android:textColor="@color/white"
             android:textSize="@dimen/text"
@@ -167,9 +209,9 @@
             android:layout_height="1dp"
             android:layout_column="0"
             android:layout_columnSpan="2"
-            android:layout_row="13"
+            android:layout_row="17"
             android:background="@color/white" />
-
+
         <TextView
             android:id="@+id/tempB"
             android:layout_width="match_parent"
@@ -180,7 +222,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:layout_row="14"
+            android:layout_row="18"
             android:text="@string/tempB"
             android:textColor="@color/white"
             android:textSize="@dimen/text"
@@ -194,7 +236,7 @@
             android:layout_column="0"
             android:layout_columnSpan="2"
             android:layout_gravity="left"
-            android:layout_row="17"
+            android:layout_row="19"
             android:background="@color/black"
             android:gravity="center"
             android:text="@string/noIn"

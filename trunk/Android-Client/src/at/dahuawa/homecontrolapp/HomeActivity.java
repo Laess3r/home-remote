@@ -71,6 +71,8 @@ public class HomeActivity extends Activity {
 	Switch button_B;
 	Switch button_C;
 	Switch button_D;
+	Switch button_E;
+	Switch button_X;
 
 	TextView tempA;
 	TextView tempB;
@@ -86,6 +88,8 @@ public class HomeActivity extends Activity {
 		button_B = (Switch) findViewById(R.id.buttonB);
 		button_C = (Switch) findViewById(R.id.buttonC);
 		button_D = (Switch) findViewById(R.id.buttonD);
+		button_E = (Switch) findViewById(R.id.buttonE);
+		button_X = (Switch) findViewById(R.id.buttonX);
 		tempA = (TextView) findViewById(R.id.tempA);
 		tempB = (TextView) findViewById(R.id.tempB);
 		setButtonListeners();
@@ -232,6 +236,20 @@ public class HomeActivity extends Activity {
 		button_D.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				togglePlugWithWarningMessage(button_D, 'D');
+			}
+
+		});
+		
+		button_E.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				togglePlug(button_E, 'E');
+			}
+
+		});
+		
+		button_X.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				togglePlug(button_X, 'X');
 			}
 
 		});
@@ -412,6 +430,16 @@ public class HomeActivity extends Activity {
 			button_D.setChecked(plug.isEnabled());
 			button_D.setEnabled(true);
 			break;
+		case 'E':
+			button_E.setText(plug.getName());
+			button_E.setChecked(plug.isEnabled());
+			button_E.setEnabled(true);
+			break;
+		case 'X':
+			button_X.setText(plug.getName());
+			button_X.setChecked(plug.isEnabled());
+			button_X.setEnabled(true);
+			break;
 		default:
 			toast("PLUG ID not found: " + plug.getId());
 			break;
@@ -450,6 +478,14 @@ public class HomeActivity extends Activity {
 		button_D.setText("n/a");
 		button_D.setChecked(false);
 		button_D.setEnabled(false);
+		
+		button_E.setText("n/a");
+		button_E.setChecked(false);
+		button_E.setEnabled(false);
+		
+		button_X.setText("n/a");
+		button_X.setChecked(false);
+		button_X.setEnabled(false);
 
 		tempA.setText("n/a");
 		tempB.setText("n/a");
@@ -490,7 +526,7 @@ public class HomeActivity extends Activity {
 	public void updateAll() {
 
 		updateAllPlugs();
-		updateTempSensors();
+		updateTempSensors();		
 
 	}
 

@@ -41,6 +41,8 @@ public class HomeControl {
 	private static Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
 	private static Plug PLUG_C = new Plug('C', "Lichterkette", false);
 	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
+	private static Plug PLUG_E = new Plug('E', "Ikea Kasten", false);
+	private static Plug PLUG_X = new Plug('X', "Test", false);
 
 	private static TempSensor SENSOR_A = new TempSensor('A', "Innenraum", 0);
 	private static TempSensor SENSOR_B = new TempSensor('B', "Draussen", 0);
@@ -70,13 +72,17 @@ public class HomeControl {
 			return PLUG_C;
 		case 'D':
 			return PLUG_D;
+		case 'E':
+			return PLUG_E;
+		case 'X':
+			return PLUG_X;
 		default:
 			return null;
 		}
 	}
 
 	public List<Plug> getAllPlugs() {
-		return Arrays.asList(PLUG_A, PLUG_B, PLUG_C, PLUG_D);
+		return Arrays.asList(PLUG_A, PLUG_B, PLUG_C, PLUG_D, PLUG_E, PLUG_X);
 	}
 
 	/**

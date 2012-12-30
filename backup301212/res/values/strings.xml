@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="MainTitle">Home Control</string>
+    <color name="blue">#00A6E9</color> 
+    <color name="darkgray">#3D3D3D</color>
+    <string name="app_name">Home Control</string>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <string name="settings">Server settings</string>
+    <string name="update">Update</string>
+    <string name="ip">Host Ip</string>
+    <string name="port">Host Port</string>
+    <string name="buttonremote">Control Plugs</string>
+    <string name="motors">Control Motors</string>
+    <string name="savesettings">Save settings</string>
+    <string name="noIn"> - </string>
+    <string name="clear">Clear states</string>
+    <string name="password">Password</string>
+    <string name="user">Username</string>
+    <string name="temps">Temperatures</string>
+    <string name="tempA">n/a</string>
+    <string name="log">Server log</string>
+     <string name="music">Play music</string>
+    <string name="tempB">n/a</string>
+    <string name="sendUrl">Send and start playing</string>
+    <string name="stopUrl">Stop playing</string>
+    <string name="url">URL:</string>
+
+</resources>

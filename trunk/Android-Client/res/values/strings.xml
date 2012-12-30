@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="MainTitle">Home Control</string>
-    <color name="blue">#00A6E9</color>
+    <color name="blue">#00A6E9</color> 
     <color name="darkgray">#3D3D3D</color>
     <string name="app_name">Home Control</string>
     <color name="black">#000000</color>

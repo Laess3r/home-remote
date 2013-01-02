@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import at.dahu4wa.homecontrol.model.LogEntry;
 import at.dahu4wa.homecontrol.model.LogFile;
@@ -41,11 +43,11 @@ public class HomeControl {
 	private static Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
 	private static Plug PLUG_C = new Plug('C', "Lichterkette", false);
 	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
-	private static Plug PLUG_E = new Plug('E', "Ikea Kasten", false);
-	private static Plug PLUG_X = new Plug('X', "Test", false);
+	private static Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
+	private static Plug PLUG_X = new Plug('X', "Ambilight", false);
 
-	private static TempSensor SENSOR_A = new TempSensor('A', "Innenraum", 0);
-	private static TempSensor SENSOR_B = new TempSensor('B', "Draussen", 0);
+	private static TempSensor SENSOR_A = new TempSensor('A', "Inside", 0);
+	private static TempSensor SENSOR_B = new TempSensor('B', "Outside", 0);
 
 	private static StreamMusicPlayer player = new StreamMusicPlayer();
 
@@ -96,13 +98,22 @@ public class HomeControl {
 		plugToUpdate.setEnabled(isEnabled);
 
 		updatePlugHw(plugToUpdate);
-		logFile.log("Plug " + plugId + " set to: " + isEnabled);
+		//logFile.log("Plug " + plugId + " set to: " + isEnabled);
 		return plugToUpdate;
 	}
 
 	public void init() {
 		try {
-
+			
+			Timer t = new Timer("Updating LCD",true);
+			t.schedule( new TimerTask() {
+				
+				@Override
+				public void run() {
+					updateAllTempSensors();
+				}
+			}, 1000, 60000 );
+			
 			logFile = new LogFile();
 
 			serialCommUtils = new SerialCommUtils();
@@ -165,6 +176,16 @@ public class HomeControl {
 			System.out.print("");
 		}
 		updateFinished = false;
+		
+		Timer t = new Timer("Updating LCD");
+		t.schedule( new TimerTask() {
+			
+			@Override
+			public void run() {
+				updateAllTempSensors();
+			}
+		}, 5000);
+		
 	}
 
 	public TempSensor getTempSensorById(char id) {

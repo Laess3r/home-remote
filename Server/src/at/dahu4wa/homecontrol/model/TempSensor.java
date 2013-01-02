@@ -38,7 +38,11 @@ public class TempSensor {
 	}
 
 	public float getTempValue() {
-		return tempValue;
+
+		float rounded = Math.round(tempValue * 10) / 10F;
+		rounded = rounded - 5.5F;
+
+		return rounded;
 	}
 
 	public void setTempValue(float tempValue) {

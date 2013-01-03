@@ -34,7 +34,10 @@ vi tomcat-users.xml
 }}}
 
 
-*TODO how to copy war file to server*
+ **Copy .war file to Raspberry
+The easiest way to send the file to the raspberry is to connect via sFTP (same port and login like SSD)
+Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.24/webapps".. Thats it :)
+
 
   * Run tomcat
 {{{

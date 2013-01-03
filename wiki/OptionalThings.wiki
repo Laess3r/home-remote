@@ -4,7 +4,8 @@
 *sudo raspi-config* let you start the initial config at every time
 
 == Pyload downloader on Raspi ==
-Let your little embedded system download your files.
+Let your little embedded system download your files. Detailed instructions can be found here:
+
 http://jankarres.de/2012/08/raspberry-pi-downloadmanager-pyload-installieren/
 
 == Coming soon == 

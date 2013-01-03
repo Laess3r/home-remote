@@ -35,7 +35,7 @@ vi tomcat-users.xml
 
 
  **Copy .war file to Raspberry
-The easiest way to send the file to the raspberry is to connect via sFTP (same port and login like SSD)
+The easiest way to send the file to the raspberry is to connect via SFTP (same port and login like SSD, notice the "S" before FTP!)
 Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.24/webapps".. Thats it :)
 
 
@@ -45,4 +45,4 @@ Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.24/webapps".. Thats it :)
    sudo sh startup.sh
 }}}
 
-*TODO how to auto-run tomcat on startup*
+*manual how to auto-run tomcat on startup will follow*

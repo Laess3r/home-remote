@@ -14,7 +14,7 @@ public class OSDetector {
 	public static String getSerialPort() {
 		
 		if (isWindows()) {
-			return "COM5";			//TODO get this from properties
+			return "COM10";			//TODO get this from properties
 		} else if (isUnix()) {
 			return "/dev/ttyUSB0";	//TODO get this from properties
 		}

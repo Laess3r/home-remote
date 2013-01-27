@@ -30,7 +30,7 @@ vi tomcat-users.xml
 }}}
   * Add a new tomcat user like this:
 {{{
-   <user username="pi" password="raspberry" roles="manager-gui"/>
+   <user username="pi" password="raspberry" roles="login"/>
 }}}
 
 

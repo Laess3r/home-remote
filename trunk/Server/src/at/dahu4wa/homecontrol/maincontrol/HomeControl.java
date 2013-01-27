@@ -26,7 +26,6 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
  * Main Controller for Home Control
  * 
  * TODO Push the plugs into a h2 database
- * 
  * TODO Names should be set via client config
  * 
  * @author Stefan Huber
@@ -232,7 +231,7 @@ public class HomeControl {
 	}
 
 	public void updateAllTempSensors() {
-		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue();
+		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "'C\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue()+"'C";
 		byte[] lcdMessage = (msg).getBytes();
 		int messageSize = lcdMessage.length + 3;
 		byte[] messageToSend = new byte[messageSize];
@@ -294,6 +293,7 @@ public class HomeControl {
 	}
 
 	public MediaStatus setStreamUrl(String url) {
+		sendTextToLCD("putting url\n"+url);
 		try {
 			player.insert(new BasicPlaybackSong(new URL(url)), new BasicPlaybackAudioDevice());
 			player.start();

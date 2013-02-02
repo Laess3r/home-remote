@@ -12,7 +12,7 @@ They install arduino drivers, map the port to a supported name, installs java an
 {{{
 sudo -s
 apt-get update && apt-get upgrade
-apt-get install arduino openjdk-6-jdk samba vim
+apt-get install openjdk-6-jdk arduino samba vim
 ln -s /dev/ttyACM0 /dev/ttyUSB0
 }}}   
 
@@ -22,10 +22,10 @@ ln -s /dev/ttyACM0 /dev/ttyUSB0
 {{{
 sudo -s
 cd /etc/
-wget http://mirrors.axint.net/apache/tomcat/tomcat-7/v7.0.34/bin/apache-tomcat-7.0.34.tar.gz
-tar xzf apache-tomcat-7.0.34.tar.gz
-rm apache-tomcat-7.0.34.tar.gz
-cd apache-tomcat-7.0.34/conf
+wget http://mirrors.axint.net/apache/tomcat/tomcat-7/v7.0.35/bin/apache-tomcat-7.0.35.tar.gz
+tar xzf apache-tomcat-7.0.35.tar.gz
+rm apache-tomcat-7.0.35.tar.gz
+cd apache-tomcat-7.0.35/conf
 vi tomcat-users.xml
 }}}
   * Add a new tomcat user like this:
@@ -36,7 +36,7 @@ vi tomcat-users.xml
 
  **Copy .war file to Raspberry
 The easiest way to send the file to the raspberry is to connect via SFTP (same port and login like SSD, notice the "S" before FTP!)
-Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.24/webapps".. Thats it :)
+Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.35/webapps".. Thats it :)
 
 
   * Run tomcat

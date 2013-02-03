@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="enhanced_logging"
+        android:summary="@string/pref_user_enhanced_logging_detail"
+        android:title="@string/pref_user_enhanced_logging" />
+
+    <ListPreference
+        android:defaultValue="180"
+        android:entries="@array/pref_time_out_titles"
+        android:entryValues="@array/pref_time_out_values"
+        android:key="connection_time_out"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_connection_time_out" />
+
+</PreferenceScreen>

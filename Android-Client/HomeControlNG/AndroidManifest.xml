@@ -31,6 +31,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.dahuawa.homecontrolng.MainActivity" />
         </activity>
+        
     </application>
 
 </manifest>

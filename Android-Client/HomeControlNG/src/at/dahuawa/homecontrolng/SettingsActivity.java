@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -63,7 +65,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 
 		addPreferencesFromResource(R.xml.pref_general);
-		
+
 		PreferenceCategory header = new PreferenceCategory(this);
 		header.setTitle(R.string.pref_header_host);
 		getPreferenceScreen().addPreference(header);
@@ -83,6 +85,7 @@ public class SettingsActivity extends PreferenceActivity {
 		bindPreferenceSummaryToValue(findPreference(HOST_PORT));
 		bindPreferenceSummaryToValue(findPreference(USER_NAME));
 		bindPreferenceSummaryToValue(findPreference(USER_PASSWORD));
+
 		bindPreferenceSummaryToValue(findPreference(ENHANCED_LOGGING));
 		bindPreferenceSummaryToValue(findPreference(CONNECNTION_TIME_OUT));
 	}
@@ -115,39 +118,47 @@ public class SettingsActivity extends PreferenceActivity {
 	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
-			String stringValue = value.toString();
 
 			if (preference instanceof ListPreference) {
+				String stringValue = value.toString();
 				ListPreference listPreference = (ListPreference) preference;
 				int index = listPreference.findIndexOfValue(stringValue);
 
 				preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
 
+			} else if (preference instanceof EditTextPreference) {
+				String stringValue = value.toString();
+				if (preference.getKey().equals(USER_PASSWORD)) {
+					String pw = "";
+					for (int i = 0; i < stringValue.length(); i++) {
+						pw = pw + "•";
+					}
+					preference.setSummary(pw);
+				} else {
+					preference.setSummary(stringValue);
+				}
+
 			} else {
-				preference.setSummary(stringValue);
+				// checkbox doesnt need this
 			}
 			return true;
 		}
 	};
 
-	/**
-	 * Binds a preference's summary to its value. More specifically, when the
-	 * preference's value is changed, its summary (line of text below the
-	 * preference title) is updated to reflect the value. The summary is also
-	 * immediately updated upon calling this method. The exact display format is
-	 * dependent on the type of preference.
-	 * 
-	 * @see #sBindPreferenceSummaryToValueListener
-	 */
 	private static void bindPreferenceSummaryToValue(Preference preference) {
 		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
-		sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-				PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+		if (preference instanceof CheckBoxPreference) {
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getBoolean(preference.getKey(), false));
+		} else {
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class HostPreferenceFragmemt extends PreferenceFragment {
+	public static class HostPreferenceFragment extends PreferenceFragment {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -159,7 +170,7 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class UserPreferenceFragmemt extends PreferenceFragment {
+	public static class UserPreferenceFragment extends PreferenceFragment {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -171,7 +182,7 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class ExpertPreferenceFragmemt extends PreferenceFragment {
+	public static class ExpertPreferenceFragment extends PreferenceFragment {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);

@@ -2,15 +2,17 @@
 
     <EditTextPreference
         android:defaultValue="@string/pref_default_value"
-        android:inputType="phone"
+        android:inputType="text"
         android:key="user_name"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_user_name" />
+    
     <EditTextPreference
         android:defaultValue="@string/pref_default_value"
-        android:inputType="textNoSuggestions"
+        android:inputType="text"
+        android:password="true"
         android:key="user_password"
         android:maxLines="1"
         android:selectAllOnFocus="true"

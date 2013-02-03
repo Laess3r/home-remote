@@ -62,6 +62,8 @@ public class SettingsActivity extends PreferenceActivity {
 			return;
 		}
 
+		addPreferencesFromResource(R.xml.pref_general);
+		
 		PreferenceCategory header = new PreferenceCategory(this);
 		header.setTitle(R.string.pref_header_host);
 		getPreferenceScreen().addPreference(header);

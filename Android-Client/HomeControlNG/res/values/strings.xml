@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Home Control NG</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_plugs">Control Plugs</string>
+    <string name="title_temps">View Temps</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+
+</resources>

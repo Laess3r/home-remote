@@ -25,8 +25,8 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
 /**
  * Main Controller for Home Control
  * 
- * TODO Push the plugs into a h2 database
- * TODO Names should be set via client config
+ * TODO Push the plugs into a h2 database TODO Names should be set via client
+ * config
  * 
  * @author Stefan Huber
  */
@@ -97,22 +97,22 @@ public class HomeControl {
 		plugToUpdate.setEnabled(isEnabled);
 
 		updatePlugHw(plugToUpdate);
-		//logFile.log("Plug " + plugId + " set to: " + isEnabled);
+		// logFile.log("Plug " + plugId + " set to: " + isEnabled);
 		return plugToUpdate;
 	}
 
 	public void init() {
 		try {
-			
-			Timer t = new Timer("Updating LCD",true);
-			t.schedule( new TimerTask() {
-				
+
+			Timer t = new Timer("Updating LCD", true);
+			t.schedule(new TimerTask() {
+
 				@Override
 				public void run() {
 					updateAllTempSensors();
 				}
-			}, 1000, 60000 );
-			
+			}, 1000, 60000);
+
 			logFile = new LogFile();
 
 			serialCommUtils = new SerialCommUtils();
@@ -121,6 +121,8 @@ public class HomeControl {
 
 				@Override
 				public void onFinish(String incomingMessage) {
+					
+					logFile.log(incomingMessage);
 
 					if (incomingMessage.startsWith("X")) {
 						String[] splitTemp = incomingMessage.split("T");
@@ -175,16 +177,16 @@ public class HomeControl {
 			System.out.print("");
 		}
 		updateFinished = false;
-		
+
 		Timer t = new Timer("Updating LCD");
-		t.schedule( new TimerTask() {
-			
+		t.schedule(new TimerTask() {
+
 			@Override
 			public void run() {
 				updateAllTempSensors();
 			}
 		}, 5000);
-		
+
 	}
 
 	public TempSensor getTempSensorById(char id) {
@@ -231,7 +233,8 @@ public class HomeControl {
 	}
 
 	public void updateAllTempSensors() {
-		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "'C\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue()+"'C";
+		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "'C\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue()
+				+ "'C";
 		byte[] lcdMessage = (msg).getBytes();
 		int messageSize = lcdMessage.length + 3;
 		byte[] messageToSend = new byte[messageSize];
@@ -278,12 +281,14 @@ public class HomeControl {
 
 		if (player.isStopped()) {
 			String information = "Player has already been stopped!";
+			logFile.log(information);
 			sendTextToLCD(information);
 			return new MediaStatus(false, information);
 		}
 		try {
 			player.stop();
 		} catch (MusicPlayerException e) {
+			logFile.log(e.getLocalizedMessage() + "\n" + e.getStackTrace());
 			sendTextToLCD(e.getMessage());
 			return new MediaStatus(false, e.getMessage());
 		}
@@ -293,17 +298,22 @@ public class HomeControl {
 	}
 
 	public MediaStatus setStreamUrl(String url) {
-		sendTextToLCD("putting url\n"+url);
+		sendTextToLCD("putting url\n" + url);
+		logFile.log("setting url: " + url);
 		try {
 			player.insert(new BasicPlaybackSong(new URL(url)), new BasicPlaybackAudioDevice());
+			logFile.log("url inserted");
 			player.start();
+			logFile.log("player started");
 		} catch (Exception e) {
 			sendTextToLCD(e.getMessage());
+			logFile.log(e.getMessage() + "\n" + e.getLocalizedMessage() + "\n" + e.getStackTrace());
 			System.out.println(e);
 			return new MediaStatus(false, e.getMessage());
 		}
 
 		sendTextToLCD(url);
+		logFile.log("Now playing...\n" + url);
 		return new MediaStatus(true, "Now playing...");
 	}
 }

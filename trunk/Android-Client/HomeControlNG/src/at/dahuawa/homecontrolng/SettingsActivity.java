@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +40,11 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		PreferenceManager pm = getPreferenceManager();
+		pm.setSharedPreferencesName("SettingsActivity");
+		pm.setSharedPreferencesMode(MODE_PRIVATE);
+
 		setupActionBar();
 	}
 
@@ -45,6 +52,7 @@ public class SettingsActivity extends PreferenceActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
@@ -81,13 +89,13 @@ public class SettingsActivity extends PreferenceActivity {
 		getPreferenceScreen().addPreference(header);
 		addPreferencesFromResource(R.xml.pref_expert);
 
-		bindPreferenceSummaryToValue(findPreference(HOST_IP));
-		bindPreferenceSummaryToValue(findPreference(HOST_PORT));
-		bindPreferenceSummaryToValue(findPreference(USER_NAME));
-		bindPreferenceSummaryToValue(findPreference(USER_PASSWORD));
+		xbindPreferenceSummaryToValue(findPreference(HOST_IP));
+		xbindPreferenceSummaryToValue(findPreference(HOST_PORT));
+		xbindPreferenceSummaryToValue(findPreference(USER_NAME));
+		xbindPreferenceSummaryToValue(findPreference(USER_PASSWORD));
 
-		bindPreferenceSummaryToValue(findPreference(ENHANCED_LOGGING));
-		bindPreferenceSummaryToValue(findPreference(CONNECNTION_TIME_OUT));
+		xbindPreferenceSummaryToValue(findPreference(ENHANCED_LOGGING));
+		xbindPreferenceSummaryToValue(findPreference(CONNECNTION_TIME_OUT));
 	}
 
 	@Override
@@ -145,12 +153,28 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	};
 
+	private void xbindPreferenceSummaryToValue(Preference preference) {
+
+		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+		if (preference instanceof CheckBoxPreference) {
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+					getSharedPreferences("SettingsActivity", MODE_PRIVATE).getBoolean(preference.getKey(), false));
+
+		} else {
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+					getSharedPreferences("SettingsActivity", MODE_PRIVATE).getString(preference.getKey(), ""));
+		}
+	}
+
 	private static void bindPreferenceSummaryToValue(Preference preference) {
+
 		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
 		if (preference instanceof CheckBoxPreference) {
 			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
 					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getBoolean(preference.getKey(), false));
+
 		} else {
 			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
 					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
@@ -159,6 +183,10 @@ public class SettingsActivity extends PreferenceActivity {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static class HostPreferenceFragment extends PreferenceFragment {
+
+		public HostPreferenceFragment() {
+		}
+
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -171,6 +199,10 @@ public class SettingsActivity extends PreferenceActivity {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static class UserPreferenceFragment extends PreferenceFragment {
+
+		public UserPreferenceFragment() {
+		}
+
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -183,6 +215,10 @@ public class SettingsActivity extends PreferenceActivity {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static class ExpertPreferenceFragment extends PreferenceFragment {
+
+		public ExpertPreferenceFragment() {
+		}
+
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);

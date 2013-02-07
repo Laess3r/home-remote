@@ -1,13 +1,13 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <header
-        android:fragment="at.dahuawa.homecontrolng.SettingsActivity.HostPreferenceFragment"
+        android:fragment="${packageName}.${activityClass}$HostPreferenceFragment"
         android:title="@string/pref_header_host" />
     <header
-        android:fragment="at.dahuawa.homecontrolng.SettingsActivity.UserPreferenceFragment"
+        android:fragment="${packageName}.${activityClass}$UserPreferenceFragment"
         android:title="@string/pref_header_user" />
     <header
-        android:fragment="at.dahuawa.homecontrolng.SettingsActivity.ExpertPreferenceFragment"
+        android:fragment="a${packageName}.${activityClass}$ExpertPreferenceFragment"
         android:title="@string/pref_header_expert" />
 
 </preference-headers>

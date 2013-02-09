@@ -16,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import at.dahuawa.homecontrolng.communication.CommuinicationUtils;
-import at.dahuawa.homecontrolng.communication.ConnectionData;
+import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.fragments.PlugsFragment;
+import at.dahuawa.homecontrolng.fragments.TempsFragment;
 
 public class MainActivity extends FragmentActivity {
 
@@ -26,7 +27,8 @@ public class MainActivity extends FragmentActivity {
 
 	CommuinicationUtils utils = CommuinicationUtils.getInstance();
 	
-	PlugsFragment plugsFragement = null;
+	private PlugsFragment plugsFragement = null;
+	private TempsFragment tempsFragment = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,10 @@ public class MainActivity extends FragmentActivity {
 		if(plugsFragement != null){
 			plugsFragement.loadData();
 		}
+		
+		if(tempsFragment != null){
+			tempsFragment.loadData();
+		}
 	}
 
 	@Override
@@ -70,6 +76,8 @@ public class MainActivity extends FragmentActivity {
 		
 		
 	case R.id.menu_update:
+		tempsFragment.setData(getConnectionData());
+		tempsFragment.loadData();
 		plugsFragement.setData(getConnectionData());
 		plugsFragement.loadData();
 		break;
@@ -90,6 +98,11 @@ public class MainActivity extends FragmentActivity {
 			if (position == 1) {
 				plugsFragement = new PlugsFragment(getConnectionData());
 				return plugsFragement;
+			}
+			
+			if (position == 2) {
+				tempsFragment = new TempsFragment(getConnectionData());
+				return tempsFragment;
 			}
 
 			Fragment fragment = new DummySectionFragment();
@@ -127,7 +140,6 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 			TextView textView = new TextView(getActivity());
 			textView.setGravity(Gravity.CENTER);
 			textView.setText("Tab "+Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER))+ " \nCOMING SOON!");
@@ -135,9 +147,9 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	private ConnectionData getConnectionData() {
+	private HomeControlProps getConnectionData() {
 
-		ConnectionData data = new ConnectionData();
+		HomeControlProps data = new HomeControlProps();
 
 		SharedPreferences prefs = getSharedPreferences("SettingsActivity", MODE_PRIVATE);
 		data.setServer_ip(prefs.getString(SettingsActivity.HOST_IP, ""));
@@ -147,7 +159,7 @@ public class MainActivity extends FragmentActivity {
 		data.setTimeout(Integer.parseInt(timeout.isEmpty() ? "0" : timeout));
 		data.setUser(prefs.getString(SettingsActivity.USER_NAME, ""));
 		data.setPassword(prefs.getString(SettingsActivity.USER_PASSWORD, ""));
-
+		data.setDebugMode(prefs.getBoolean(SettingsActivity.ENHANCED_LOGGING, false));
 		return data;
 	}
 

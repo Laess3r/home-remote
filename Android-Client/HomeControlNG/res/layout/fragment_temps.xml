@@ -1,0 +1,53 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:rowCount="21" >
+
+    <TextView
+        android:id="@+id/tempA"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_row="16"
+        android:text="@string/empty"
+        android:textSize="@dimen/text"
+        android:textStyle="normal"
+        android:typeface="sans" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_row="17"
+        android:background="@color/blue" />
+
+    <TextView
+        android:id="@+id/tempB"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_column="0"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_row="18"
+        android:text="@string/empty"
+        android:textSize="@dimen/text"
+        android:textStyle="normal"
+        android:typeface="sans" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_row="19"
+        android:background="@color/blue" />
+
+</GridLayout>

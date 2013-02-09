@@ -17,7 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 import at.dahuawa.homecontrolng.R;
-import at.dahuawa.homecontrolng.communication.ConnectionData;
+import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.communication.WebServiceTask;
 import at.dahuawa.homecontrolng.communication.WebServiceTaskFinishedCallback;
 import at.dahuawa.homecontrolng.model.Plug;
@@ -33,10 +33,11 @@ public class PlugsFragment extends Fragment {
 	Switch button_E;
 	Switch button_X;
 
-	private ConnectionData data;
-	//private List<Plug> plugs = new ArrayList<Plug>();
+	private HomeControlProps data;
 
-	public PlugsFragment(ConnectionData data) {
+	// private List<Plug> plugs = new ArrayList<Plug>();
+
+	public PlugsFragment(HomeControlProps data) {
 		this.data = data;
 	}
 
@@ -44,7 +45,7 @@ public class PlugsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_plugs, container, false);
-		
+
 		button_A = (Switch) view.findViewById(R.id.buttonA);
 		button_B = (Switch) view.findViewById(R.id.buttonB);
 		button_C = (Switch) view.findViewById(R.id.buttonC);
@@ -53,44 +54,48 @@ public class PlugsFragment extends Fragment {
 		button_X = (Switch) view.findViewById(R.id.buttonX);
 
 		setButtonListeners();
-		
+
 		loadData();
-		
+
 		return view;
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
 
-
-
 	}
-	
+
 	WebServiceTaskFinishedCallback callback = new WebServiceTaskFinishedCallback() {
-		
+
 		@Override
 		public void handleResponse(String response) {
-			
+			toastError(response);
+
 			if (response.startsWith("{\"plug\":[{\"")) {
 				handleArrayPlugResponse(response);
 			} else {
 				handleSinglePlugResponse(response);
 			}
-			
+
+		}
+
+		@Override
+		public boolean useEnhancedLogging() {
+			return data.isDebugMode();
 		}
 	};
-	
+
 	public void handleSinglePlugResponse(String singleResponse) {
 		try {
 			JSONObject jso = new JSONObject(singleResponse);
 			handleSinglePlugResponse(jso);
 
 		} catch (Exception e) {
-			 toast("ERROR: Could not read single response! ");
+			toastError("ERROR: Could not read single response! ");
 		}
 	}
-	
+
 	public void handleArrayPlugResponse(String arrayResponse) {
 
 		try {
@@ -102,10 +107,10 @@ public class PlugsFragment extends Fragment {
 				handleSinglePlugResponse(array.getJSONObject(i));
 			}
 		} catch (Exception e) {
-			toast("ERROR: Could not read array response!");
+			// toast("ERROR: Could not read array response!");
 		}
 	}
-	
+
 	private void handleSinglePlugResponse(JSONObject jso) throws JSONException {
 
 		char id = (char) Integer.parseInt(jso.getString("id"));
@@ -118,12 +123,12 @@ public class PlugsFragment extends Fragment {
 	}
 
 	public void loadData() {
-		
+
 		String allPlugsUrl = "http://" + data.getServer_ip() + ":" + data.getServer_port() + PATH_TO_PLUG + "all";
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, getActivity(), "Getting plugs from server ...", data, callback);
 		wst.execute(new String[] { allPlugsUrl });
 	}
-	
+
 	@SuppressLint("UseValueOf")
 	public void postPlug(Plug plug) {
 
@@ -139,10 +144,8 @@ public class PlugsFragment extends Fragment {
 
 		wst.execute(new String[] { postUrl });
 	}
-	
-	
 
-	public ConnectionData getData() {
+	public HomeControlProps getData() {
 		return data;
 	}
 
@@ -187,7 +190,7 @@ public class PlugsFragment extends Fragment {
 
 		});
 	}
-	
+
 	private void findPlugAndUpdateButtons(Plug plug) {
 
 		switch (plug.getId()) {
@@ -222,12 +225,11 @@ public class PlugsFragment extends Fragment {
 			button_X.setEnabled(true);
 			break;
 		default:
-			toast("PLUG ID not found: " + plug.getId());
+			toastError("PLUG ID not found: " + plug.getId());
 			break;
 		}
 	}
-	
-	
+
 	private void togglePlug(CompoundButton button, char plugId) {
 		Plug plug = new Plug();
 		plug.setId(plugId);
@@ -243,10 +245,11 @@ public class PlugsFragment extends Fragment {
 		buildDialog(button, plugId).show();
 	}
 
-	private void toast(String message) {
-		Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+	private void toastError(String message) {
+		if (data.isDebugMode())
+			Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 	}
-	
+
 	private AlertDialog buildDialog(final CompoundButton button, final char plugId) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -277,7 +280,7 @@ public class PlugsFragment extends Fragment {
 		return builder.create();
 	}
 
-	public void setData(ConnectionData data) {
+	public void setData(HomeControlProps data) {
 		this.data = data;
 	}
 

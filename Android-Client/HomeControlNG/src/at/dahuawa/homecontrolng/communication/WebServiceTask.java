@@ -25,7 +25,7 @@ import android.util.Base64;
 
 public class WebServiceTask extends AsyncTask<String, Integer, String> {
 
-	private final ConnectionData connectionData;
+	private final HomeControlProps connectionData;
 	private final WebServiceTaskFinishedCallback callback;
 
 	public static final int POST_TASK = 1;
@@ -39,7 +39,7 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 
 	private ProgressDialog pDlg = null;
 
-	public WebServiceTask(int taskType, Context mContext, String processMessage, ConnectionData connectionData,
+	public WebServiceTask(int taskType, Context mContext, String processMessage, HomeControlProps connectionData,
 			WebServiceTaskFinishedCallback callback) {
 
 		this.connectionData = connectionData;
@@ -57,7 +57,7 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 	@SuppressWarnings("deprecation")
 	private void showProgressDialog() {
 
-		if(mContext != null){
+		if (mContext != null) {
 			pDlg = new ProgressDialog(mContext);
 			pDlg.setMessage(processMessage);
 			pDlg.setProgressDrawable(mContext.getWallpaper());
@@ -65,12 +65,12 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 			pDlg.setCancelable(false);
 			pDlg.show();
 		}
-		
-		
+
 	}
 
 	@Override
 	protected void onPreExecute() {
+		if(callback.useEnhancedLogging())
 		showProgressDialog();
 	}
 
@@ -88,7 +88,6 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 			try {
 				result = inputStreamToString(response.getEntity().getContent());
 			} catch (IOException e) {
-				// toast("ERROR: Could not retrieve data from server! (l: 347)");
 			}
 		}
 
@@ -98,16 +97,16 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onPostExecute(String response) {
 		callback.handleResponse(response);
-		if(pDlg != null)
-		pDlg.dismiss();
+		if (pDlg != null)
+			pDlg.dismiss();
 	}
 
 	private HttpParams getHttpParams() {
 
 		HttpParams htpp = new BasicHttpParams();
 
-		HttpConnectionParams.setConnectionTimeout(htpp, connectionData.getTimeout()*1000);
-		HttpConnectionParams.setSoTimeout(htpp, connectionData.getTimeout()*5000);
+		HttpConnectionParams.setConnectionTimeout(htpp, connectionData.getTimeout() * 1000);
+		HttpConnectionParams.setSoTimeout(htpp, connectionData.getTimeout() * 5000);
 
 		return htpp;
 	}
@@ -145,7 +144,7 @@ public class WebServiceTask extends AsyncTask<String, Integer, String> {
 				break;
 			}
 		} catch (Exception e) {
-			// toast("ERROR: Could not retrieve data from server! (l:400)");
+			
 			e.printStackTrace();
 		}
 

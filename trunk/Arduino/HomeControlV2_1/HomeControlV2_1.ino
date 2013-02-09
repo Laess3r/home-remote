@@ -87,9 +87,10 @@ void sound(int count){
   int i =0;
   for(i = 0; i<count;i++){
     digitalWrite(PEEP,HIGH);
-    delay(15);
+    delay(1);
     digitalWrite(PEEP,LOW);
-    delay(100);
+    if(count > 1)
+      delay(200);
   }
 }
 
@@ -126,7 +127,7 @@ void handleTemp(){
 }
 
 void handlePlug(){
-
+  sound(1);
   int plugId = bufferedInput[1]; // A, B, C, D
   int isEnabled = bufferedInput[2]; // 1 is true, 0 is false
   int plugNr = 0;
@@ -135,32 +136,32 @@ void handlePlug(){
   case 'A':
   case 'a':
     plugNr = 1; 
-    prefix = "11111";
+    prefix = "01011";
     break;
   case 'B':
   case 'b':
     plugNr = 2; 
-    prefix = "11111";
+    prefix = "01011";
     break;
   case 'C':
   case 'c':
     plugNr = 3; 
-    prefix = "11111";
+    prefix = "01011";
     break;
   case 'D':
   case 'd':
     plugNr = 4; 
-    prefix = "11111";
+    prefix = "01011";
     break;
   case 'E':
   case 'e':
     plugNr = 5; 
-    prefix = "11111";
+    prefix = "01011";
     break;
   case 'X':
   case 'x':
     plugNr = 1; 
-    prefix = "11110";
+    prefix = "01001";
     break;
   default:
     break;
@@ -174,13 +175,6 @@ void handlePlug(){
 
   writeToLcd(3);
   Serial.println("Plug updated");
-  
-   if(isEnabled == 1){
-     sound(2);
-  } 
-  else{
-     sound(3);
-  }
 }
 
 // Buffer methods

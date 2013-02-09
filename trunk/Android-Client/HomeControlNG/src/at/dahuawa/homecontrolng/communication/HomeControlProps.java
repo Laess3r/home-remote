@@ -1,27 +1,30 @@
 package at.dahuawa.homecontrolng.communication;
 
-public class ConnectionData {
+public class HomeControlProps {
 	
 	private String server_ip;
 	private int server_port;
 	private String user;
 	private String password;
 	private int timeout;
+	private boolean debugMode;
 	
-	public ConnectionData(){
+	public HomeControlProps(){
 		this.server_ip = null;
 		this.server_port = 0;
 		this.user = null;
 		this.password = null;
 		this.timeout = 0;
+		this.debugMode = false;
 	}
 	
-	public ConnectionData(String server_ip, int server_port, String user, String password, int timeout){
+	public HomeControlProps(String server_ip, int server_port, String user, String password, int timeout, boolean debugMode){
 		this.server_ip = server_ip;
 		this.server_port = server_port;
 		this.user = user;
 		this.password = password;
 		this.timeout = timeout;
+		this.debugMode = debugMode;
 	}
 
 	public String getServer_ip() {
@@ -62,6 +65,14 @@ public class ConnectionData {
 
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
+	}
+
+	public boolean isDebugMode() {
+		return debugMode;
+	}
+
+	public void setDebugMode(boolean debugMode) {
+		this.debugMode = debugMode;
 	}
 
 }

@@ -40,7 +40,7 @@ public class HomeControl {
 
 	private static Plug PLUG_A = new Plug('A', "Entertaiment", false);
 	private static Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
-	private static Plug PLUG_C = new Plug('C', "Lichterkette", false);
+	private static Plug PLUG_C = new Plug('C', "E-Piano", false);
 	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
 	private static Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
 	private static Plug PLUG_X = new Plug('X', "Ambilight", false);

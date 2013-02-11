@@ -45,4 +45,42 @@ Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.35/webapps".. Thats it :)
    sudo sh startup.sh
 }}}
 
-*manual how to auto-run tomcat on startup will follow*
+= Running the whole thing on startup ==
+
+#!/bin/bash
+#
+# tomcat        
+#
+# chkconfig: 
+# description: 	Start up the Tomcat servlet engine.
+
+# Source function library.
+. /etc/init.d/functions
+
+
+RETVAL=$?
+CATALINA_HOME="/etc/apache-tomcat-7.0.35"
+
+case "$1" in
+ start)
+        if [ -f $CATALINA_HOME/bin/startup.sh ];
+          then
+	    echo $"Starting Tomcat"
+            ln -s /dev/ttyACM0 /dev/ttyUSB0 
+            /bin/su tomcat $CATALINA_HOME/bin/startup.sh
+        fi
+	;;
+ stop)
+        if [ -f $CATALINA_HOME/bin/shutdown.sh ];
+          then
+	    echo $"Stopping Tomcat"
+            /bin/su tomcat $CATALINA_HOME/bin/shutdown.sh
+        fi
+ 	;;
+ *)
+ 	echo $"Usage: $0 {start|stop}"
+	exit 1
+	;;
+esac
+
+exit $RETVAL

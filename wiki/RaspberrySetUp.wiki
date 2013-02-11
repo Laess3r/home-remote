@@ -47,16 +47,10 @@ Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.35/webapps".. Thats it :)
 
 = Running the whole thing on startup ==
 
+create a new file called "tomcat" in "/etc/init.d" and copy the following content into it: (please note the current apache tomcat folder location!)
+
+{{{
 #!/bin/bash
-#
-# tomcat        
-#
-# chkconfig: 
-# description: 	Start up the Tomcat servlet engine.
-
-# Source function library.
-. /etc/init.d/functions
-
 
 RETVAL=$?
 CATALINA_HOME="/etc/apache-tomcat-7.0.35"
@@ -84,3 +78,4 @@ case "$1" in
 esac
 
 exit $RETVAL
+}}

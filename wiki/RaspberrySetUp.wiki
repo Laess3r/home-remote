@@ -49,7 +49,7 @@ Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.35/webapps".. Thats it :)
 
 create a new file called "tomcat" in "/etc/init.d" and copy the following content into it: (please note the current apache tomcat folder location!)
 
-[Create a new file: *vim /etc/init.d/tomcat* then *i* for *i*nsert mode]
+Create a new file: *vim /etc/init.d/tomcat* then *i* for *i*nsert mode
 
 {{{
 #!/bin/bash

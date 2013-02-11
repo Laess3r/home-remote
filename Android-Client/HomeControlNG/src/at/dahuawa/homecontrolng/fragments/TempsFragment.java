@@ -107,10 +107,10 @@ public class TempsFragment extends Fragment {
 	private void updateTemp(TempSensor received) {
 		switch (received.getId()) {
 		case 'A':
-			tempA.setText(received.getName() + ":						 " + received.getTempValue() + "°C");
+			tempA.setText(received.getName() + ":					" + received.getTempValue() + "°C");
 			break;
 		case 'B':
-			tempB.setText(received.getName() + ":						   " + received.getTempValue() + "°C");
+			tempB.setText(received.getName() + ":					" + received.getTempValue() + "°C");
 			break;
 		default:
 			break;

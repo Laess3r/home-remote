@@ -231,10 +231,12 @@ public class PlugsFragment extends Fragment {
 	}
 
 	private void togglePlug(CompoundButton button, char plugId) {
+
+		button.setEnabled(false);
+
 		Plug plug = new Plug();
 		plug.setId(plugId);
 		plug.setEnabled(button.isChecked());
-
 		postPlug(plug);
 
 		button.setChecked(!button.isChecked());

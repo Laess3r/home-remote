@@ -52,7 +52,7 @@ create a new file called "tomcat" in "/etc/init.d" and copy the following conten
 {{{
 #!/bin/bash
 
-RETVAL=$?
+RESULT=$?
 CATALINA_HOME="/etc/apache-tomcat-7.0.35"
 
 case "$1" in
@@ -60,22 +60,22 @@ case "$1" in
         if [ -f $CATALINA_HOME/bin/startup.sh ];
           then
 	    echo $"Starting Tomcat"
-            ln -s /dev/ttyACM0 /dev/ttyUSB0 
-            /bin/su tomcat $CATALINA_HOME/bin/startup.sh
+            sudo ln -s /dev/ttyACM0 /dev/ttyUSB0 
+            sudo $CATALINA_HOME/bin/startup.sh
         fi
 	;;
  stop)
         if [ -f $CATALINA_HOME/bin/shutdown.sh ];
           then
 	    echo $"Stopping Tomcat"
-            /bin/su tomcat $CATALINA_HOME/bin/shutdown.sh
+            sudo tomcat $CATALINA_HOME/bin/shutdown.sh
         fi
  	;;
  *)
- 	echo $"Usage: $0 {start|stop}"
+ 	echo $"Following command missing: $0 {start|stop}"
 	exit 1
 	;;
 esac
 
-exit $RETVAL
+exit $RESULT
 }}

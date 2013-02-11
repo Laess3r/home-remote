@@ -45,7 +45,7 @@ Copy the HomeBase.war File to: "/etc/apache-tomcat-7.0.35/webapps".. Thats it :)
    sudo sh startup.sh
 }}}
 
-= Running the whole thing on startup ==
+= Run tomcat on startup ==
 
 create a new file called "tomcat" in "/etc/init.d" and copy the following content into it: (please note the current apache tomcat folder location!)
 

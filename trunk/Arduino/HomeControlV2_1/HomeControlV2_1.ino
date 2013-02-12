@@ -26,6 +26,7 @@
 #include <RCSwitch.h>
 #include <LiquidCrystal.h>
 #include <aLM335.h>
+#include <Dht11.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 

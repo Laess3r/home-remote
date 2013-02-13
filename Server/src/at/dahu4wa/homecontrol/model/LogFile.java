@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Log file object 
+ * Log file object
  * 
  * @author Stefan Huber
  */
@@ -20,8 +20,13 @@ public class LogFile {
 	public List<LogEntry> getLogFile() {
 		return logEntries;
 	}
-	
-	public void log(String logEntry){
+
+	public void log(String logEntry) {
 		logEntries.add(new LogEntry(logEntry));
+
+		while (logEntries.size() > 100) {
+			logEntries.remove(0);
+		}
+
 	}
 }

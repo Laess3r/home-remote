@@ -8,6 +8,7 @@ public class TempSensor {
 	private char id;
 	private String name;
 	private float tempValue;
+	private float humidity;
 
 	public TempSensor() {
 		this.id = ' ';
@@ -19,6 +20,14 @@ public class TempSensor {
 		this.id = id;
 		this.name = name;
 		this.tempValue = tempValue;
+		this.humidity = -1F;
+	}
+	
+	public TempSensor(char id, String name, float tempValue, float humidity) {
+		this.id = id;
+		this.name = name;
+		this.tempValue = tempValue;
+		this.humidity = humidity;
 	}
 
 	public char getId() {
@@ -38,9 +47,12 @@ public class TempSensor {
 	}
 
 	public float getTempValue() {
-
-		// float rounded = Math.round(tempValue * 10) / 10F;
-		// rounded = rounded - 5.5F;
+		
+//		// correct sensor A temp value
+//		if(id == 'A'){
+//			float f = tempValue+3;
+//			return (float) (Math.ceil(f * 2) / 2);
+//		}
 
 		return tempValue;
 	}
@@ -49,4 +61,12 @@ public class TempSensor {
 		this.tempValue = tempValue;
 	}
 
-}
+	public float getHumidity() {
+		return humidity;
+	}
+
+	public void setHumidity(float humidity) {
+		this.humidity = humidity;
+	}
+
+};

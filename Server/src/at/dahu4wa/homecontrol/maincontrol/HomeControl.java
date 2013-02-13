@@ -45,8 +45,8 @@ public class HomeControl {
 	private static Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
 	private static Plug PLUG_X = new Plug('X', "Ambilight", false);
 
-	private static TempSensor SENSOR_A = new TempSensor('A', "Inside", 0);
-	private static TempSensor SENSOR_B = new TempSensor('B', "Outside", 0);
+	private static TempSensor SENSOR_A = new TempSensor('A', "Innen ", 0);
+	private static TempSensor SENSOR_B = new TempSensor('B', "Aussen", 0);
 
 	private static StreamMusicPlayer player = new StreamMusicPlayer();
 
@@ -111,7 +111,7 @@ public class HomeControl {
 				public void run() {
 					updateAllTempSensors();
 				}
-			}, 1000, 60000);
+			}, 1000, 30000);
 
 			logFile = new LogFile();
 
@@ -121,17 +121,19 @@ public class HomeControl {
 
 				@Override
 				public void onFinish(String incomingMessage) {
-					
-					logFile.log(incomingMessage);
 
 					if (incomingMessage.startsWith("X")) {
 						String[] splitTemp = incomingMessage.split("T");
 						if (splitTemp[1].startsWith("A"))
 							SENSOR_A.setTempValue(Float.parseFloat(splitTemp[1].substring(1)));
-						if (splitTemp[2].startsWith("B"))
-							SENSOR_B.setTempValue(Float.parseFloat(splitTemp[2].substring(1)));
+						if (splitTemp[2].startsWith("H"))
+							SENSOR_A.setHumidity(Float.parseFloat(splitTemp[2].substring(1)));
+						if (splitTemp[3].startsWith("B"))
+							SENSOR_B.setTempValue(Float.parseFloat(splitTemp[3].substring(1)));
 					} else if (incomingMessage.startsWith("TA")) {
-						SENSOR_A.setTempValue(Float.parseFloat(incomingMessage.substring(2)));
+						String[] splitTemp = incomingMessage.split("T");
+						SENSOR_A.setTempValue(Float.parseFloat(splitTemp[1].substring(1)));
+						SENSOR_A.setHumidity(Float.parseFloat(splitTemp[2].substring(1)));
 					} else if (incomingMessage.startsWith("TB")) {
 						SENSOR_B.setTempValue(Float.parseFloat(incomingMessage.substring(2)));
 					}
@@ -210,9 +212,7 @@ public class HomeControl {
 
 	public void updateTempSensor(TempSensor tempSensor) {
 
-		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue();
-
-		byte[] lcdMessage = (msg).getBytes();
+		byte[] lcdMessage = (getLCDMessage()).getBytes();
 		int messageSize = lcdMessage.length + 3;
 		byte[] messageToSend = new byte[messageSize];
 
@@ -233,9 +233,7 @@ public class HomeControl {
 	}
 
 	public void updateAllTempSensors() {
-		String msg = SENSOR_A.getName() + ": " + SENSOR_A.getTempValue() + "'C\n" + SENSOR_B.getName() + ": " + SENSOR_B.getTempValue()
-				+ "'C";
-		byte[] lcdMessage = (msg).getBytes();
+		byte[] lcdMessage = (getLCDMessage()).getBytes();
 		int messageSize = lcdMessage.length + 3;
 		byte[] messageToSend = new byte[messageSize];
 
@@ -253,6 +251,22 @@ public class HomeControl {
 			System.out.print("");
 		}
 		updateFinished = false;
+	}
+
+	private String getLCDMessage() {
+		
+		StringBuilder b = new StringBuilder();
+		
+		b.append("In: ");
+		b.append(SENSOR_A.getTempValue());
+		b.append("'C ");
+		b.append(SENSOR_A.getHumidity());
+		b.append( "%\n");
+		b.append("Out: ");
+		b.append(SENSOR_B.getTempValue());
+		b.append("'C");
+		
+		return b.toString();
 	}
 
 	public void sendTextToLCD(String text) {

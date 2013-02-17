@@ -73,14 +73,14 @@ case "$1" in
           then
 	    echo $"Starting Tomcat"
             sudo ln -s /dev/ttyACM0 /dev/ttyUSB0 
-            sudo $CATALINA_HOME/bin/startup.sh
+            sudo sh $CATALINA_HOME/bin/startup.sh
         fi
 	;;
  stop)
         if [ -f $CATALINA_HOME/bin/shutdown.sh ];
           then
 	    echo $"Stopping Tomcat"
-            sudo tomcat $CATALINA_HOME/bin/shutdown.sh
+            sudo sh $CATALINA_HOME/bin/shutdown.sh
         fi
  	;;
  *)

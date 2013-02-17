@@ -96,3 +96,5 @@ After saving the script run:
 {{{
 sudo update-rc.d tomcat defaults
 }}}
+
+* Finished! *

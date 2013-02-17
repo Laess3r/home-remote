@@ -54,6 +54,16 @@ Create a new file: *vim /etc/init.d/tomcat* then *i* for *i*nsert mode
 {{{
 #!/bin/bash
 
+### BEGIN INIT INFO
+# Provides: tomcat
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start:
+# Default-Stop:
+# Description: Script for starting and stopping tomcat webserver
+# Short-Description: start and stop tomcat
+### END INIT INFO
+
 RESULT=$?
 CATALINA_HOME="/etc/apache-tomcat-7.0.35"
 
@@ -80,4 +90,9 @@ case "$1" in
 esac
 
 exit $RESULT
+}}}
+
+After saving the script run: 
+{{{
+sudo update-rc.d tomcat defaults
 }}}

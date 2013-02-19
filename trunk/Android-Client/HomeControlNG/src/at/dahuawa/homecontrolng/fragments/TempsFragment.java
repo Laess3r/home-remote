@@ -98,8 +98,9 @@ public class TempsFragment extends Fragment {
 		char id = (char) Integer.parseInt(jso.getString("id"));
 		String temp = jso.getString("tempValue");
 		String name = jso.getString("name");
+		String humidity = jso.getString("humidity");
 
-		TempSensor received = new TempSensor(id, name, Float.parseFloat(temp));
+		TempSensor received = new TempSensor(id, name, Float.parseFloat(temp), Float.parseFloat(humidity));
 
 		updateTemp(received);
 	}
@@ -107,10 +108,10 @@ public class TempsFragment extends Fragment {
 	private void updateTemp(TempSensor received) {
 		switch (received.getId()) {
 		case 'A':
-			tempA.setText(received.getName() + ":					" + received.getTempValue() + "°C");
+			tempA.setText(received.getName() + ":		" + received.getTempValue() + "°C / " + received.getHumidity() + "%");
 			break;
 		case 'B':
-			tempB.setText(received.getName() + ":					" + received.getTempValue() + "°C");
+			tempB.setText(received.getName() + ":		" + received.getTempValue() + "°C");
 			break;
 		default:
 			break;

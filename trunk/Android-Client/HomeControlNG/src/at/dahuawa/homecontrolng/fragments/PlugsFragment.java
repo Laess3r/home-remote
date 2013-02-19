@@ -35,8 +35,6 @@ public class PlugsFragment extends Fragment {
 
 	private HomeControlProps data;
 
-	// private List<Plug> plugs = new ArrayList<Plug>();
-
 	public PlugsFragment(HomeControlProps data) {
 		this.data = data;
 	}
@@ -198,31 +196,37 @@ public class PlugsFragment extends Fragment {
 			button_A.setText(plug.getName());
 			button_A.setChecked(plug.isEnabled());
 			button_A.setEnabled(true);
+			button_A.setClickable(true);
 			break;
 		case 'B':
 			button_B.setText(plug.getName());
 			button_B.setChecked(plug.isEnabled());
 			button_B.setEnabled(true);
+			button_B.setClickable(true);
 			break;
 		case 'C':
 			button_C.setText(plug.getName());
 			button_C.setChecked(plug.isEnabled());
 			button_C.setEnabled(true);
+			button_C.setClickable(true);
 			break;
 		case 'D':
 			button_D.setText(plug.getName());
 			button_D.setChecked(plug.isEnabled());
 			button_D.setEnabled(true);
+			button_D.setClickable(true);
 			break;
 		case 'E':
 			button_E.setText(plug.getName());
 			button_E.setChecked(plug.isEnabled());
 			button_E.setEnabled(true);
+			button_E.setClickable(true);
 			break;
 		case 'X':
 			button_X.setText(plug.getName());
 			button_X.setChecked(plug.isEnabled());
 			button_X.setEnabled(true);
+			button_X.setClickable(true);
 			break;
 		default:
 			toastError("PLUG ID not found: " + plug.getId());
@@ -233,6 +237,7 @@ public class PlugsFragment extends Fragment {
 	private void togglePlug(CompoundButton button, char plugId) {
 
 		button.setEnabled(false);
+		button.setClickable(false);
 
 		Plug plug = new Plug();
 		plug.setId(plugId);

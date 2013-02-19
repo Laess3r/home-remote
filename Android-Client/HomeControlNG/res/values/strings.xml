@@ -15,5 +15,7 @@
     <color name="white">#FFFFFF</color>
     
     <string name="empty">n/a</string>
+    <string name="loadLog">Load Logfile</string>
+    <string name="logs">Logs</string>
     
 </resources>

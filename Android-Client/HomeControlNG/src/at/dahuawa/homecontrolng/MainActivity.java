@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import at.dahuawa.homecontrolng.communication.CommuinicationUtils;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
+import at.dahuawa.homecontrolng.fragments.DashboardFragment;
+import at.dahuawa.homecontrolng.fragments.LogsFragment;
 import at.dahuawa.homecontrolng.fragments.PlugsFragment;
 import at.dahuawa.homecontrolng.fragments.TempsFragment;
 
@@ -29,6 +31,7 @@ public class MainActivity extends FragmentActivity {
 	
 	private PlugsFragment plugsFragement = null;
 	private TempsFragment tempsFragment = null;
+	private LogsFragment logsFragment = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,10 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
+			
+			if (position == 0) {
+				return new DashboardFragment(getConnectionData());
+			}
 
 			if (position == 1) {
 				plugsFragement = new PlugsFragment(getConnectionData());
@@ -104,17 +111,22 @@ public class MainActivity extends FragmentActivity {
 				tempsFragment = new TempsFragment(getConnectionData());
 				return tempsFragment;
 			}
+			
+			if (position == 3) {
+				logsFragment = new LogsFragment(getConnectionData());
+				return logsFragment;
+			}
 
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
-			return fragment;
+//			Fragment fragment = new DummySectionFragment();
+//			Bundle args = new Bundle();
+//			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+//			fragment.setArguments(args);
+			return null;
 		}
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -126,26 +138,28 @@ public class MainActivity extends FragmentActivity {
 				return getString(R.string.title_plugs).toUpperCase();
 			case 2:
 				return getString(R.string.title_temps).toUpperCase();
+			case 3:
+				return getString(R.string.logs).toUpperCase();
 			}
 			return "TODO";
 		}
 	}
 
-	public static class DummySectionFragment extends Fragment {
-
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			textView.setText("Tab "+Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER))+ " \nCOMING SOON!");
-			return textView;
-		}
-	}
+//	public static class DummySectionFragment extends Fragment {
+//
+//		public static final String ARG_SECTION_NUMBER = "section_number";
+//
+//		public DummySectionFragment() {
+//		}
+//
+//		@Override
+//		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//			TextView textView = new TextView(getActivity());
+//			textView.setGravity(Gravity.CENTER);
+//			textView.setText("Tab "+Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER))+ " \nCOMING SOON!");
+//			return textView;
+//		}
+//	}
 
 	private HomeControlProps getConnectionData() {
 

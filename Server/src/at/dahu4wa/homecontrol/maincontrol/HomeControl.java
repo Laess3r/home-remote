@@ -6,17 +6,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import at.dahu4wa.homecontrol.model.LogEntry;
-import at.dahu4wa.homecontrol.model.LogFile;
-import at.dahu4wa.homecontrol.model.MediaStatus;
-import at.dahu4wa.homecontrol.model.Plug;
-import at.dahu4wa.homecontrol.model.TempSensor;
 import at.dahu4wa.homecontrol.serialcommunication.SerialCommUtils;
 import at.dahu4wa.homecontrol.serialcommunication.SerialReaderCallback;
+import at.dahuawa.homecontrol.model.LogEntry;
+import at.dahuawa.homecontrol.model.LogFile;
+import at.dahuawa.homecontrol.model.MediaStatus;
+import at.dahuawa.homecontrol.model.Plug;
+import at.dahuawa.homecontrol.model.TempSensor;
+import at.dahuawa.homecontrol.model.TimedTask;
 import de.hotware.hotsound.audio.data.BasicPlaybackAudioDevice;
 import de.hotware.hotsound.audio.player.BasicPlaybackSong;
 import de.hotware.hotsound.audio.player.MusicPlayerException;
@@ -32,27 +37,42 @@ import de.hotware.hotsound.audio.player.StreamMusicPlayer;
  */
 public class HomeControl {
 
+	public static volatile HomeControl homeControl;
+
 	private static LogFile logFile;
 
-	private static SerialPort serialPort;
-	private static OutputStream serialOutStream;
-	private static SerialCommUtils serialCommUtils;
+	private SerialPort serialPort;
+	private OutputStream serialOutStream;
+	private SerialCommUtils serialCommUtils;
 
-	private static Plug PLUG_A = new Plug('A', "Entertaiment", false);
-	private static Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
-	private static Plug PLUG_C = new Plug('C', "E-Piano", false);
-	private static Plug PLUG_D = new Plug('D', "Schreibtisch", false);
-	private static Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
-	private static Plug PLUG_X = new Plug('X', "Ambilight", false);
+	private Plug PLUG_A = new Plug('A', "Entertaiment", false);
+	private Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
+	private Plug PLUG_C = new Plug('C', "E-Piano", false);
+	private Plug PLUG_D = new Plug('D', "Schreibtisch", false);
+	private Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
+	private Plug PLUG_X = new Plug('X', "Ambilight", false);
 
-	private static TempSensor SENSOR_A = new TempSensor('A', "Innen ", 0);
-	private static TempSensor SENSOR_B = new TempSensor('B', "Aussen", 0);
+	private Timer timer;
 
-	private static StreamMusicPlayer player = new StreamMusicPlayer();
+	private TempSensor SENSOR_A = new TempSensor('A', "Innen ", 0);
+	private TempSensor SENSOR_B = new TempSensor('B', "Aussen", 0);
+
+	private StreamMusicPlayer player = new StreamMusicPlayer();
+
+	private Map<Long, TimedTask> timedTasks = new HashMap<Long, TimedTask>();
 
 	private boolean updateFinished = false;
+	private long dummyseq = 0;
 
-	public HomeControl() {
+	public static HomeControl getInstance() {
+
+		if (homeControl == null) {
+			homeControl = new HomeControl();
+		}
+		return homeControl;
+	}
+
+	private HomeControl() {
 		init();
 	}
 
@@ -104,8 +124,8 @@ public class HomeControl {
 	public void init() {
 		try {
 
-			Timer t = new Timer("Updating LCD", true);
-			t.schedule(new TimerTask() {
+			timer = new Timer("Updating LCD", true);
+			timer.schedule(new TimerTask() {
 
 				@Override
 				public void run() {
@@ -254,18 +274,18 @@ public class HomeControl {
 	}
 
 	private String getLCDMessage() {
-		
+
 		StringBuilder b = new StringBuilder();
-		
+
 		b.append("In: ");
 		b.append(SENSOR_A.getTempValue());
 		b.append("'C ");
 		b.append(SENSOR_A.getHumidity());
-		b.append( "%\n");
+		b.append("%\n");
 		b.append("Out: ");
 		b.append(SENSOR_B.getTempValue());
 		b.append("'C");
-		
+
 		return b.toString();
 	}
 
@@ -329,5 +349,55 @@ public class HomeControl {
 		sendTextToLCD(url);
 		logFile.log("Now playing...\n" + url);
 		return new MediaStatus(true, "Now playing...");
+	}
+
+	public TimedTask getTimerByUid(String uid) {
+		return timedTasks.get(Long.parseLong(uid));
+	}
+
+	public Collection<TimedTask> getAllTimedTasks() {
+		return timedTasks.values();
+	}
+
+	public TimedTask postTimedTask(TimedTask timedTask) {
+
+		if (timedTask.getUid() == null) {
+			schedule(timedTask);
+		} else {
+			timedTasks.put(timedTask.getUid(), timedTask);
+		}
+
+		return timedTask;
+	}
+
+	private void schedule(final TimedTask timedTask) {
+
+		TimerTask task = new TimerTask() {
+
+			@Override
+			public void run() {
+				updatePlugStatus(timedTask.getPlug(), timedTask.isStatusToSet());
+				logFile.log("TimedTask with UID " + timedTask.getUid() + " ran " + timedTask.getPlug());
+				timedTask.setFinished(true);
+				sendTextToLCD("UID " + timedTask.getUid() + " FINISHED");
+			}
+		};
+
+		switch (timedTask.getTimerType()) {
+		case ABSOLUTE_TIME:
+			timer.schedule(task, new Date(timedTask.getTime()));
+			break;
+
+		case RELATIVE_TIME:
+			timer.schedule(task, new Date(System.currentTimeMillis() + timedTask.getTime()));
+			break;
+
+		}
+
+		timedTask.setUid(Long.valueOf(dummyseq));
+		dummyseq += 1;
+		timedTasks.put(timedTask.getUid(), timedTask);
+		logFile.log("TimedTask with UID " + timedTask.getUid() + " scheduled");
+		sendTextToLCD("UID " + timedTask.getUid() + " scheduled");
 	}
 }

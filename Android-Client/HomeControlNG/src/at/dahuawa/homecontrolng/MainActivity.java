@@ -8,19 +8,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import at.dahuawa.homecontrolng.communication.CommuinicationUtils;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.fragments.DashboardFragment;
 import at.dahuawa.homecontrolng.fragments.LogsFragment;
 import at.dahuawa.homecontrolng.fragments.PlugsFragment;
 import at.dahuawa.homecontrolng.fragments.TempsFragment;
+import at.dahuawa.homecontrolng.fragments.TimingFragment;
 
 public class MainActivity extends FragmentActivity {
 
@@ -32,6 +28,7 @@ public class MainActivity extends FragmentActivity {
 	private PlugsFragment plugsFragement = null;
 	private TempsFragment tempsFragment = null;
 	private LogsFragment logsFragment = null;
+	private TimingFragment timingFragment = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +113,11 @@ public class MainActivity extends FragmentActivity {
 				logsFragment = new LogsFragment(getConnectionData());
 				return logsFragment;
 			}
+			
+			if (position == 4) {
+				timingFragment = new TimingFragment(getConnectionData());
+				return timingFragment;
+			}
 
 //			Fragment fragment = new DummySectionFragment();
 //			Bundle args = new Bundle();
@@ -126,7 +128,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 4;
+			return 5;
 		}
 
 		@Override
@@ -140,6 +142,8 @@ public class MainActivity extends FragmentActivity {
 				return getString(R.string.title_temps).toUpperCase();
 			case 3:
 				return getString(R.string.logs).toUpperCase();
+			case 4:
+				return "TIMING".toUpperCase();
 			}
 			return "TODO";
 		}

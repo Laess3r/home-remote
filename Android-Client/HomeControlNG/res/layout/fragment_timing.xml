@@ -1,0 +1,115 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="4"
+    android:rowCount="4" >
+
+    <TimePicker
+        android:id="@+id/timePicker1"
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        android:layout_gravity="left"
+        android:layout_row="0" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_column="2"
+        android:layout_gravity="right"
+        android:layout_row="0"
+        android:text="Submit" />
+
+    <RadioGroup
+        android:id="@+id/timingPlug"
+        android:layout_column="1"
+        android:layout_gravity="left"
+        android:layout_row="1" >
+
+        <RadioButton
+            android:id="@+id/A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="A" />
+
+        <RadioButton
+            android:id="@+id/B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B" />
+
+        <RadioButton
+            android:id="@+id/C"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C" />
+
+        <RadioButton
+            android:id="@+id/D"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D" />
+
+        <RadioButton
+            android:id="@+id/E"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E" />
+
+        <RadioButton
+            android:id="@+id/X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/relText"
+        android:layout_column="0"
+        android:layout_columnSpan="3"
+        android:layout_gravity="left"
+        android:layout_row="2"
+        android:ems="10"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="138dp"
+        android:layout_column="0"
+        android:layout_row="2" />
+
+    <Space
+        android:layout_width="238dp"
+        android:layout_height="15dp"
+        android:layout_column="2"
+        android:layout_row="2" />
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="15dp"
+        android:layout_column="0"
+        android:layout_row="3" />
+
+     <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_column="2"
+        android:layout_gravity="left"
+        android:layout_row="1" >
+
+        <RadioButton
+            android:id="@+id/ABS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="ABS" />
+
+        <RadioButton
+            android:id="@+id/REL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REL" />
+    </RadioGroup>
+    
+</GridLayout>

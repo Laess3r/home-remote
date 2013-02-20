@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import at.dahu4wa.homecontrol.model.LogEntry;
-import at.dahu4wa.homecontrol.model.LogFile;
 import at.dahuawa.homecontrolng.R;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.communication.WebServiceTask;
 import at.dahuawa.homecontrolng.communication.WebServiceTaskFinishedCallback;
+import at.dahuawa.homecontrolng.model.LogEntry;
+import at.dahuawa.homecontrolng.model.LogFile;
 
 public class LogsFragment extends Fragment {
 	private static final String PATH_TO_LOG = "/HomeBase/log/";

@@ -16,11 +16,11 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
-import at.dahu4wa.homecontrol.model.Plug;
 import at.dahuawa.homecontrolng.R;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.communication.WebServiceTask;
 import at.dahuawa.homecontrolng.communication.WebServiceTaskFinishedCallback;
+import at.dahuawa.homecontrolng.model.Plug;
 
 public class PlugsFragment extends Fragment {
 	public static final String PATH_TO_PLUG = "/HomeBase/plug/";

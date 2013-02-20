@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import at.dahu4wa.homecontrol.model.TempSensor;
 import at.dahuawa.homecontrolng.R;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.communication.WebServiceTask;
 import at.dahuawa.homecontrolng.communication.WebServiceTaskFinishedCallback;
+import at.dahuawa.homecontrolng.model.TempSensor;
 
 public class TempsFragment extends Fragment {
 	private static final String PATH_TO_TEMPSENSOR = "/HomeBase/tempsensor/";

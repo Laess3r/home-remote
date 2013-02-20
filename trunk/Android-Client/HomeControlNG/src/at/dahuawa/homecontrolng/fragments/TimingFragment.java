@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import at.dahu4wa.homecontrol.model.TimedTask;
-import at.dahu4wa.homecontrol.model.TimedTask.TimerType;
 import at.dahuawa.homecontrolng.R;
 import at.dahuawa.homecontrolng.communication.HomeControlProps;
 import at.dahuawa.homecontrolng.communication.WebServiceTask;
 import at.dahuawa.homecontrolng.communication.WebServiceTaskFinishedCallback;
+import at.dahuawa.homecontrolng.model.TimedTask;
+import at.dahuawa.homecontrolng.model.TimedTask.TimerType;
 
 public class TimingFragment extends Fragment {
 	public static final String PATH_TO_TIMING = "/HomeBase/timing/";

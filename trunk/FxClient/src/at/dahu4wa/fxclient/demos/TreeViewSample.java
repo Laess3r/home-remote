@@ -9,10 +9,6 @@ import javafx.stage.Stage;
 
 public class TreeViewSample extends Application {
 
-	// private final Node rootIcon = new ImageView(
-	// new Image(getClass().getResourceAsStream("folder_16.png"))
-	// );
-
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -21,13 +17,12 @@ public class TreeViewSample extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Tree View Sample");
 
-		TreeItem<String> rootItem = new TreeItem<String>("Modules"); // new
-																		// TreeItem<String>
-																		// ("Inbox",
-																		// rootIcon);
+		TreeItem<String> rootItem = new TreeItem<String>("Modules");
+
 		rootItem.setExpanded(true);
 		for (int i = 1; i < 6; i++) {
 			TreeItem<String> item = new TreeItem<String>("Module " + i);
+
 			rootItem.getChildren().add(item);
 		}
 		TreeView<String> tree = new TreeView<String>(rootItem);

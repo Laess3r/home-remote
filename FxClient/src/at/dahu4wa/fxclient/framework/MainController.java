@@ -21,12 +21,6 @@ public class MainController {
 		init();
 	}
 
-	private void init() {
-		mainView.setContent(new Text(
-				"This is the initial main content, set by the MainController. \nTODO: make listeners for dynamic menu list"));
-
-	}
-
 	public void registerControllers() {
 		// TODO how do I register the controllers automatically??
 		menuTreePaneController.registerMenuPoint(new LoginFormController());
@@ -34,11 +28,17 @@ public class MainController {
 
 	}
 
+	private void init() {
+		mainView.setContent(new Text(
+				"This is the initial main content, set by the MainController. \nTODO: make listeners for dynamic menu list"));
+
+	}
+
 	public void changeContentTo(IFController controller) {
 		mainView.setContent(controller.getView());
 	}
-	
-	public Node getCurrentContent(){
+
+	public Node getCurrentContent() {
 		return mainView.getContent();
 	}
 }

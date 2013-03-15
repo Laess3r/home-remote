@@ -5,6 +5,11 @@ import javafx.scene.text.Text;
 import at.dahu4wa.fxclient.modules.loginmodule.LoginFormController;
 import at.dahu4wa.fxclient.modules.testmodule.TestController;
 
+/**
+ * The main controller, where the others are being registered
+ * 
+ * @author Stefan Huber
+ */
 public class MainController {
 
 	private final MainView mainView;

@@ -1,0 +1,2 @@
+jfx.build.stagingdir = ${workspace}/RichClient/build
+jfx.build.apptitle = RichClient

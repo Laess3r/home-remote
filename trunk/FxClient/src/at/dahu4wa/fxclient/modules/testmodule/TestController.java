@@ -1,7 +1,7 @@
 package at.dahu4wa.fxclient.modules.testmodule;
 
 import javafx.scene.Node;
-import at.dahu4wa.fxclient.framework.IFController;
+import at.dahu4wa.framex.framework.IFController;
 
 /**
  * Test module
@@ -31,10 +31,10 @@ public class TestController implements IFController {
 			@Override
 			public void run() {
 				isRunning = true;
-				for (double i = 0; i <= 360; i++) {
+				for (double i = 0; i <= 10000; i++) {
 					scene.getR().setRotate(i);
 					try {
-						Thread.sleep(20);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						System.err.println("thread interrupted");
 					}
@@ -45,6 +45,12 @@ public class TestController implements IFController {
 		Thread t = new Thread(run);
 		if (!isRunning)
 			t.start();
+	}
+
+	@Override
+	public void postCreate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

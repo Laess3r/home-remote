@@ -3,8 +3,9 @@ package at.dahu4wa.fxclient;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import at.dahu4wa.fxclient.framework.MainController;
-import at.dahu4wa.fxclient.framework.MainView;
+import at.dahu4wa.framex.framework.MainController;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.LoginFormController;
+import at.dahu4wa.fxclient.modules.testmodule.TestController;
 
 /**
  * Main start point of application
@@ -18,7 +19,7 @@ public class Main extends Application {
 	private static final int SIZE_Y = 650;
 
 	// TODO maybe there is a better way than singleton pattern
-	private static MainView mainView = null;
+	
 	private static MainController mainController = null;
 
 	public static MainController getMainController() {
@@ -26,9 +27,13 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		mainView = new MainView();
-		mainController = new MainController(mainView);
+		mainController = new MainController();
 		launch(args);
+	}
+
+	private void registerControllers() {
+		mainController.registerController(new LoginFormController());
+		mainController.registerController(new TestController());
 	}
 
 	@Override
@@ -36,8 +41,10 @@ public class Main extends Application {
 		primaryStage.setTitle(APPLICATION_TITLE);
 		primaryStage.setWidth(SIZE_X);
 		primaryStage.setHeight(SIZE_Y);
-		primaryStage.setScene(new Scene(mainView.getRootPane()));
+		primaryStage.setScene(new Scene(mainController.getMainView().getRootPane()));
 		primaryStage.show();
+
+		registerControllers();
 	}
 
 }

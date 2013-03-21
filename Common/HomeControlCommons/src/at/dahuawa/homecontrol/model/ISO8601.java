@@ -1,4 +1,4 @@
-package at.dahu4wa.homecontrol.model;
+package at.dahuawa.homecontrol.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,6 @@ public final class ISO8601 {
 
     /** Transform ISO 8601 string to Calendar. */
     public static Date toDate(final String iso8601string){
-        Calendar calendar = GregorianCalendar.getInstance();
         String s = iso8601string.replace("Z", "+00:00");
         try {
             s = s.substring(0, 22) + s.substring(23);

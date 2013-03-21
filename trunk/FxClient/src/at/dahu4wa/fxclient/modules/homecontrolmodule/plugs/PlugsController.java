@@ -29,7 +29,7 @@ public class PlugsController implements IFController {
 
 	@Override
 	public String getTitle() {
-		return "Manage Plugs";
+		return "MANAGE PLUGS";
 	}
 
 	@Override
@@ -56,14 +56,17 @@ public class PlugsController implements IFController {
 						}
 
 						for (Plug plug : plugs) {
-
 							EventHandler<ActionEvent> onEvent = createOnEvent(plug);
-
 							EventHandler<ActionEvent> offEvent = createOffEvent(plug);
 
 							view.addButtonGroup(plug.getName(), onEvent,
 									offEvent);
 						}
+					}
+
+					@Override
+					public void onFail(String errorMessage) {
+						// TODO Auto-generated method stub
 					}
 
 				});
@@ -86,6 +89,12 @@ public class PlugsController implements IFController {
 								System.out.println(JsonConverter
 										.getPlug(result));
 							}
+
+							@Override
+							public void onFail(String errorMessage) {
+								// TODO Auto-generated method stub
+								
+							}
 						});
 			}
 		};
@@ -107,6 +116,12 @@ public class PlugsController implements IFController {
 							public void onResult(String result) {
 								System.out.println(JsonConverter
 										.getPlug(result));
+							}
+
+							@Override
+							public void onFail(String errorMessage) {
+								// TODO Auto-generated method stub
+								
 							}
 						});
 			}

@@ -1,8 +1,10 @@
-package at.dahu4wa.fxclient.modules.homecontrolmodule;
+package at.dahu4wa.fxclient.modules.homecontrolmodule.login;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import at.dahu4wa.framex.framework.IFController;
@@ -95,7 +97,18 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 				view.getBtnLogin().setScaleY(1);
 			}
 		});
+		
+		EventHandler<KeyEvent> loginEvent = new EventHandler<KeyEvent>() {
 
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER){
+					doLogin();
+				}
+			}
+		};
+		view.getPwBox().setOnKeyPressed(loginEvent);
+		view.getUserTextField().setOnKeyPressed(loginEvent);
 	}
 
 	public String getUsername() {

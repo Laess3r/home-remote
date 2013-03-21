@@ -23,7 +23,7 @@ public class PlugsView extends GridPane {
 				PlugsView.class.getResource("PlugsForm.css")
 						.toExternalForm());
 		
-		Text title = new Text("Manage plugs");
+		Text title = new Text("Manage devices");
 		title.setId("header");
 		add(title, 0, 0, 2, 1);
 		

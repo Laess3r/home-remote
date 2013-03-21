@@ -1,4 +1,4 @@
-package at.dahu4wa.fxclient.modules.homecontrolmodule;
+package at.dahu4wa.fxclient.modules.homecontrolmodule.login;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

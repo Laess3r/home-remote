@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import at.dahu4wa.framex.framework.MainController;
-import at.dahu4wa.fxclient.modules.homecontrolmodule.LoginFormController;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.login.LoginFormController;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.plugs.PlugsController;
 import at.dahu4wa.fxclient.modules.testmodule.TestController;
 

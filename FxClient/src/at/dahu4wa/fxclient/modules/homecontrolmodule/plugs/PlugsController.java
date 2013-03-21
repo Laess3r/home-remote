@@ -9,13 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import at.dahu4wa.framex.framework.IFController;
-import at.dahu4wa.fxclient.modules.homecontrolmodule.IFLoginDataProvider;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.ConnectionCallback;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.HomeConnection;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.HomeControlGetType;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.HomeControlPostType;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.JsonConverter;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.ServerResponseException;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.login.IFLoginDataProvider;
 import at.dahuawa.homecontrol.model.Plug;
 
 public class PlugsController implements IFController {

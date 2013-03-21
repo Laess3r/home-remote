@@ -22,7 +22,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import at.dahu4wa.fxclient.modules.homecontrolmodule.IFLoginDataProvider;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.login.IFLoginDataProvider;
 
 public class HomeConnection {
 

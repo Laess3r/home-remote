@@ -38,7 +38,13 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 	}
 
 	private void doLogin() {
+		
+		view.getBtnLogin().setDisable(true);
+		view.getUserTextField().setDisable(true);
+		view.getPwBox().setDisable(true);
 
+		// TODO show loading circle :) 
+		
 		HomeConnection connection = new HomeConnection(this);
 
 		connection.testConnection(new ConnectionCallback() {

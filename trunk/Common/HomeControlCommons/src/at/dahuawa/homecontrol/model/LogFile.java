@@ -1,4 +1,4 @@
-package at.dahu4wa.homecontrol.model;
+package at.dahuawa.homecontrol.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import at.dahu4wa.framex.framework.MainController;
 import at.dahu4wa.fxclient.modules.homecontrolmodule.LoginFormController;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.plugs.PlugsController;
 import at.dahu4wa.fxclient.modules.testmodule.TestController;
 
 /**
@@ -14,7 +15,7 @@ import at.dahu4wa.fxclient.modules.testmodule.TestController;
  */
 public class Main extends Application {
 
-	public static final String APPLICATION_TITLE = Main.class.getSimpleName();
+	public static final String APPLICATION_TITLE = "HomeControlFX 1.0 beta";
 	private static final int SIZE_X = 800;
 	private static final int SIZE_Y = 650;
 
@@ -32,8 +33,13 @@ public class Main extends Application {
 	}
 
 	private void registerControllers() {
-		mainController.registerController(new LoginFormController());
+		LoginFormController loginForm = new LoginFormController();
+		//mainController.registerController(loginForm);
 		mainController.registerController(new TestController());
+		mainController.registerController(new PlugsController(loginForm));
+		
+		mainController.changeContentTo(loginForm);
+		mainController.enableMenuTree(false);
 	}
 
 	@Override

@@ -6,16 +6,18 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import at.dahu4wa.framex.framework.IFController;
+import at.dahu4wa.fxclient.Main;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.ConnectionCallback;
+import at.dahu4wa.fxclient.modules.homecontrolmodule.connection.HomeConnection;
 
 /**
  * Login form for HomeControlFx
  * 
  * @author Stefan Huber
  */
-public class LoginFormController implements IFController {
+public class LoginFormController implements IFController, IFLoginDataProvider {
 
 	private LoginFormView view;
-	private HomeConnection homeConnection;
 
 	@Override
 	public String getTitle() {
@@ -30,41 +32,48 @@ public class LoginFormController implements IFController {
 	@Override
 	public void init() {
 		view = new LoginFormView();
-		homeConnection = new HomeConnection();
 		registerListeners();
+	}
+
+	private void doLogin() {
+
+		HomeConnection connection = new HomeConnection(this);
+
+		connection.testConnection(new ConnectionCallback() {
+
+			@Override
+			public void onResult(String result) {
+				boolean success = result.startsWith("{\"tempSensor\":");
+				if (success) {
+					view.getActionTarget().setFill(Color.GREEN);
+					view.getActionTarget().setText(
+							"Logged in successfully");
+				} else {
+					view.getActionTarget().setFill(Color.FIREBRICK);
+					view.getActionTarget().setText("Login failed !");
+				}
+				Main.getMainController().enableMenuTree(success);
+				view.getBtnLogin().setDisable(success);
+				view.getUserTextField().setDisable(success);
+				view.getPwBox().setDisable(success);
+			}
+		});
 	}
 
 	private void registerListeners() {
 
-		final GetCallback callback = new GetCallback() {
-
-			@Override
-			public void onResult(HomeControlGetType getType, String result) {
-
-				if (getType == null) {
-					view.getActionTarget().setFill(Color.FIREBRICK);
-					view.getActionTarget().setText(result);
-				} else {
-					view.getActionTarget().setFill(Color.GREEN);
-					view.getActionTarget().setText("Login successful!");
-				}
-			}
-		};
-
 		view.getBtnLogin().setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-
-				homeConnection.doGet(callback, getUserPass(),
-						HomeControlGetType.ALL_TEMPS);
+				doLogin();
 			}
 		});
 
 		view.getBtnLogin().setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				view.getBtnLogin().setScaleX(1.5);
-				view.getBtnLogin().setScaleY(1.5);
+				view.getBtnLogin().setScaleX(1.2);
+				view.getBtnLogin().setScaleY(1.2);
 			}
 		});
 
@@ -78,14 +87,17 @@ public class LoginFormController implements IFController {
 
 	}
 
-	public String getUserPass() {
-		return view.getUserTextField().getText() + ":"
-				+ view.getPwBox().getText();
+	public String getUsername() {
+		if (view == null) {
+			return "";
+		}
+		return view.getUserTextField().getText();
 	}
 
-	@Override
-	public void postCreate() {
-		// TODO Auto-generated method stub
-		
+	public String getPassword() {
+		if (view == null) {
+			return "";
+		}
+		return view.getPwBox().getText();
 	}
 }

@@ -1,4 +1,4 @@
-package at.dahu4wa.fxclient.modules.homecontrolmodule;
+package at.dahu4wa.fxclient.modules.homecontrolmodule.connection;
 
 public enum HomeControlGetType {
 
@@ -19,4 +19,6 @@ public enum HomeControlGetType {
 	public String getPath() {
 		return path;
 	}
+	
+	public static final int TYPE = 2;
 }

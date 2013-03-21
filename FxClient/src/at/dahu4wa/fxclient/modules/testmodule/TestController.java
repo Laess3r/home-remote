@@ -47,10 +47,4 @@ public class TestController implements IFController {
 			t.start();
 	}
 
-	@Override
-	public void postCreate() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

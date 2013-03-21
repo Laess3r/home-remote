@@ -26,9 +26,6 @@ import at.dahu4wa.fxclient.modules.homecontrolmodule.IFLoginDataProvider;
 
 public class HomeConnection {
 
-	private static final String BASE_PATH = ""; // TODO
-																					// config
-
 	private int taskType;
 	private final IFLoginDataProvider loginDataProvider;
 	private ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -50,7 +47,7 @@ public class HomeConnection {
 	 */
 	public void execute(HomeControlPostType type, ConnectionCallback callback) {
 
-		String url = BASE_PATH + type.getPath();
+		String url = IP.BASE_PATH + type.getPath();
 		taskType = HomeControlPostType.TYPE;
 		execute(url, callback);
 	}
@@ -60,13 +57,13 @@ public class HomeConnection {
 	 */
 	public void execute(HomeControlGetType type, ConnectionCallback callback) {
 
-		String url = BASE_PATH + type.getPath();
+		String url = IP.BASE_PATH + type.getPath();
 		taskType = HomeControlGetType.TYPE;
 		execute(url, callback);
 	}
 
 	public void testConnection(ConnectionCallback callback) {
-		String url = BASE_PATH + HomeControlGetType.ALL_TEMPS.getPath();
+		String url = IP.BASE_PATH + HomeControlGetType.ALL_TEMPS.getPath();
 		taskType = HomeControlGetType.TYPE;
 		execute(url, callback);
 	}

@@ -46,16 +46,27 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 				boolean success = result.startsWith("{\"tempSensor\":");
 				if (success) {
 					view.getActionTarget().setFill(Color.GREEN);
-					view.getActionTarget().setText(
-							"Logged in successfully");
+					view.getActionTarget().setText("Logged in successfully");
 				} else {
+					if(result.contains("HTTP Status 401")){
+						view.getActionTarget().setText("Wrong username or password!");
+					}else{
+						view.getActionTarget().setText("Login failed !");
+					}
 					view.getActionTarget().setFill(Color.FIREBRICK);
-					view.getActionTarget().setText("Login failed !");
+					
 				}
 				Main.getMainController().enableMenuTree(success);
 				view.getBtnLogin().setDisable(success);
 				view.getUserTextField().setDisable(success);
 				view.getPwBox().setDisable(success);
+			}
+
+			@Override
+			public void onFail(String errorMessage) {
+				view.getActionTarget().setFill(Color.FIREBRICK);
+				view.getActionTarget().setText("Login failed: " + errorMessage);
+
 			}
 		});
 	}

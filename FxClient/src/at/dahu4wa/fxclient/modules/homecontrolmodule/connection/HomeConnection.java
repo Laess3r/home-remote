@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.NoRouteToHostException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -63,7 +64,7 @@ public class HomeConnection {
 		taskType = HomeControlGetType.TYPE;
 		execute(url, callback);
 	}
-	
+
 	public void testConnection(ConnectionCallback callback) {
 		String url = BASE_PATH + HomeControlGetType.ALL_TEMPS.getPath();
 		taskType = HomeControlGetType.TYPE;
@@ -79,7 +80,13 @@ public class HomeConnection {
 
 				String result = "";
 
-				HttpResponse response = doResponse(url);
+				HttpResponse response = null;
+				try {
+					response = doResponse(url);
+				} catch (NoRouteToHostException e1) {
+					e1.printStackTrace();
+					callback.onFail(e1.getMessage());
+				}
 
 				if (response == null) {
 					return;
@@ -116,7 +123,7 @@ public class HomeConnection {
 		return htpp;
 	}
 
-	private HttpResponse doResponse(String url) {
+	private HttpResponse doResponse(String url) throws NoRouteToHostException {
 
 		HttpClient httpclient = new DefaultHttpClient(getHttpParams());
 		HttpResponse response = null;
@@ -145,9 +152,11 @@ public class HomeConnection {
 				response = httpclient.execute(httpget);
 				break;
 			}
+		} catch (NoRouteToHostException e) {
+			throw e;
 		} catch (Exception e) {
-
 			e.printStackTrace();
+			return null;
 		}
 
 		return response;

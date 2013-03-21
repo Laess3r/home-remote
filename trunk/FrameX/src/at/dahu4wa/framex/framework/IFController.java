@@ -24,9 +24,4 @@ public interface IFController {
 	 */
 	Node getView();
 
-	/**
-	 * called after view was drawn first time
-	 */
-	void postCreate();
-
 }

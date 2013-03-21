@@ -12,7 +12,8 @@ public class MainController {
 
 	private final MainView mainView;
 	private final MenuTreePaneController menuTreePaneController;
-	private final TopMenuBarController topMenuBarController; // TODO implement top menu bar
+	private final TopMenuBarController topMenuBarController; // TODO implement
+																// top menu bar
 
 	public MainController() {
 		this.mainView = new MainView();
@@ -32,14 +33,20 @@ public class MainController {
 	}
 
 	private void init() {
-		mainView.setContent(new Text(
-				"Please select a module from the left menu bar."));
+		mainView.setContent(new Text(". . . LOADING . . ."));
+
+	}
+
+	public void enableMenuTree(boolean enabled) {
+		menuTreePaneController.setEnabled(enabled);
 
 	}
 
 	public void changeContentTo(IFController controller) {
+		if (controller.getView() == null) {
+			controller.init();
+		}
 		mainView.setContent(controller.getView());
-		controller.postCreate();
 	}
 
 	public Node getCurrentContent() {

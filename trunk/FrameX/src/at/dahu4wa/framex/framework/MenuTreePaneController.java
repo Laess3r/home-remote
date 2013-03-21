@@ -24,9 +24,6 @@ public class MenuTreePaneController {
 						.getView()) {
 					System.out.println("View already opened");
 				} else {
-					if (controller.getView() == null) {
-						controller.init();
-					}
 					mainController.changeContentTo(controller);
 				}
 			}
@@ -34,6 +31,10 @@ public class MenuTreePaneController {
 
 		view.addButton(button);
 
+	}
+	
+	public void setEnabled(boolean enabled){
+		view.setDisable(!enabled);
 	}
 
 }

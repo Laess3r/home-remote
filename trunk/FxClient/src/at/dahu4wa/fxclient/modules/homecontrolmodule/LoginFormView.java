@@ -45,7 +45,6 @@ public class LoginFormView extends GridPane {
 		add(pwBox, 1, 2);
 
 		btnLogin = new Button("Log in");
-		// HBox pane sets alignment for button
 		HBox hboxButton = new HBox(10);
 		hboxButton.setAlignment(Pos.BOTTOM_RIGHT);
 		hboxButton.getChildren().add(btnLogin);

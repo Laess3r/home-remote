@@ -26,7 +26,7 @@ import at.dahu4wa.fxclient.modules.homecontrolmodule.IFLoginDataProvider;
 
 public class HomeConnection {
 
-	private static final String BASE_PATH = "http://83.215.9.111:3652/HomeBase/"; // TODO
+	private static final String BASE_PATH = ""; // TODO
 																					// config
 
 	private int taskType;

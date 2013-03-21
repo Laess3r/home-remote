@@ -16,6 +16,13 @@ public class DemoController implements IFController {
 	@Override
 	public void init() {
 		view = new DemoView();
+
+		view.getRect().scaleXProperty()
+				.bind(view.getScaleSlider().valueProperty());
+		view.getRect().scaleYProperty()
+				.bind(view.getScaleSlider().valueProperty());
+		view.getRect().rotateProperty()
+				.bind(view.getRotationSlider().valueProperty());
 	}
 
 	@Override
@@ -26,18 +33,6 @@ public class DemoController implements IFController {
 	@Override
 	public Node getView() {
 		return view;
-	}
-
-	@Override
-	public void postCreate() {
-
-		view.getRect().scaleXProperty()
-				.bind(view.getScaleSlider().valueProperty());
-		view.getRect().scaleYProperty()
-				.bind(view.getScaleSlider().valueProperty());
-		view.getRect().rotateProperty()
-				.bind(view.getRotationSlider().valueProperty());
-
 	}
 
 }

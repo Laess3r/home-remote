@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -112,7 +110,9 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	private static boolean isSimplePreferences(Context context) {
-		return ALWAYS_SIMPLE_PREFS || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || !isXLargeTablet(context);
+		return ALWAYS_SIMPLE_PREFS
+				|| Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+				|| !isXLargeTablet(context);
 	}
 
 	@Override
@@ -132,7 +132,9 @@ public class SettingsActivity extends PreferenceActivity {
 				ListPreference listPreference = (ListPreference) preference;
 				int index = listPreference.findIndexOfValue(stringValue);
 
-				preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+				preference
+						.setSummary(index >= 0 ? listPreference.getEntries()[index]
+								: null);
 
 			} else if (preference instanceof EditTextPreference) {
 				String stringValue = value.toString();
@@ -155,29 +157,41 @@ public class SettingsActivity extends PreferenceActivity {
 
 	private void xbindPreferenceSummaryToValue(Preference preference) {
 
-		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+		preference
+				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
 		if (preference instanceof CheckBoxPreference) {
-			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-					getSharedPreferences("SettingsActivity", MODE_PRIVATE).getBoolean(preference.getKey(), false));
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(
+					preference,
+					getSharedPreferences("SettingsActivity", MODE_PRIVATE)
+							.getBoolean(preference.getKey(), false));
 
 		} else {
-			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-					getSharedPreferences("SettingsActivity", MODE_PRIVATE).getString(preference.getKey(), ""));
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(
+					preference,
+					getSharedPreferences("SettingsActivity", MODE_PRIVATE)
+							.getString(preference.getKey(), ""));
 		}
 	}
 
 	private static void bindPreferenceSummaryToValue(Preference preference) {
 
-		preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+		preference
+				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
 		if (preference instanceof CheckBoxPreference) {
-			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getBoolean(preference.getKey(), false));
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(
+					preference,
+					PreferenceManager.getDefaultSharedPreferences(
+							preference.getContext()).getBoolean(
+							preference.getKey(), false));
 
 		} else {
-			sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-					PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+			sBindPreferenceSummaryToValueListener.onPreferenceChange(
+					preference,
+					PreferenceManager.getDefaultSharedPreferences(
+							preference.getContext()).getString(
+							preference.getKey(), ""));
 		}
 	}
 

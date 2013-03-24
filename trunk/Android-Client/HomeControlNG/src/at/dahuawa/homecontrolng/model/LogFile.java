@@ -27,6 +27,15 @@ public class LogFile {
 		while (logEntries.size() > 100) {
 			logEntries.remove(0);
 		}
+	}
+
+	@Override
+	public String toString() {
+		String str = "";
+		for (LogEntry entry : logEntries) {
+			str = str + "\n\n" + entry.toString();
+		}
+		return str;
 
 	}
 }

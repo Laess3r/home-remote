@@ -27,12 +27,13 @@ public class LogsFragment extends Fragment {
 
 	private HomeControlProps data;
 
-	public LogsFragment(HomeControlProps data) {
-		this.data = data;
+	public LogsFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		data = (HomeControlProps) getArguments().getSerializable("connectionData");
 
 		View view = inflater.inflate(R.layout.fragment_logs, container, false);
 

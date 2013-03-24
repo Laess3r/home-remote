@@ -35,13 +35,16 @@ public class PlugsFragment extends Fragment {
 
 	private HomeControlProps data;
 
-	public PlugsFragment(HomeControlProps data) {
-		this.data = data;
+	public PlugsFragment() {
+
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		
+		data = (HomeControlProps) getArguments().getSerializable("connectionData");
+		
 		View view = inflater.inflate(R.layout.fragment_plugs, container, false);
 
 		button_A = (Switch) view.findViewById(R.id.buttonA);
@@ -122,23 +125,28 @@ public class PlugsFragment extends Fragment {
 
 	public void loadData() {
 
-		String allPlugsUrl = "http://" + data.getServer_ip() + ":" + data.getServer_port() + PATH_TO_PLUG + "all";
-		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK, getActivity(), "Getting plugs from server ...", data, callback);
+		String allPlugsUrl = "http://" + data.getServer_ip() + ":"
+				+ data.getServer_port() + PATH_TO_PLUG + "all";
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.GET_TASK,
+				getActivity(), "Getting plugs from server ...", data, callback);
 		wst.execute(new String[] { allPlugsUrl });
 	}
 
 	@SuppressLint("UseValueOf")
 	public void postPlug(Plug plug) {
 
-		String postUrl = "http://" + data.getServer_ip() + ":" + data.getServer_port() + PATH_TO_PLUG;
+		String postUrl = "http://" + data.getServer_ip() + ":"
+				+ data.getServer_port() + PATH_TO_PLUG;
 
 		String postText = plug.isEnabled() ? "Turning ON" : "Turning OFF";
 
-		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, getActivity(), postText, data, callback);
+		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK,
+				getActivity(), postText, data, callback);
 
 		wst.addNameValuePair("id", new Character(plug.getId()).toString());
 		wst.addNameValuePair("name", plug.getName());
-		wst.addNameValuePair("enabled", new Boolean(plug.isEnabled()).toString());
+		wst.addNameValuePair("enabled",
+				new Boolean(plug.isEnabled()).toString());
 
 		wst.execute(new String[] { postUrl });
 	}
@@ -257,7 +265,8 @@ public class PlugsFragment extends Fragment {
 			Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
 	}
 
-	private AlertDialog buildDialog(final CompoundButton button, final char plugId) {
+	private AlertDialog buildDialog(final CompoundButton button,
+			final char plugId) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

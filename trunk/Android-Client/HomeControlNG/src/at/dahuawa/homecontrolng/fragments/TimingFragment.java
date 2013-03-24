@@ -26,14 +26,15 @@ public class TimingFragment extends Fragment {
 
 	Button submit;
 	EditText relTime;
-	boolean statusToSet = false;
+	boolean statusToSet = true;
 
-	public TimingFragment(HomeControlProps data) {
-		this.data = data;
+	public TimingFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		data = (HomeControlProps) getArguments().getSerializable("connectionData");
 
 		View view = inflater.inflate(R.layout.fragment_timing, container, false);
 
@@ -46,9 +47,11 @@ public class TimingFragment extends Fragment {
 			public void onClick(View v) {
 
 				Long relVal = Long.parseLong(relTime.getText().toString());
-				TimedTask t = new TimedTask(null, TimerType.RELATIVE_TIME, relVal, 'D', statusToSet);
+				TimedTask t = new TimedTask(null, TimerType.RELATIVE_TIME, relVal, 'B', statusToSet);
 				postTimedTask(t);
+				Toast.makeText(getActivity(), "B turned "+statusToSet, Toast.LENGTH_LONG).show();
 				statusToSet = !statusToSet;
+				
 			}
 		});
 
@@ -70,7 +73,7 @@ public class TimingFragment extends Fragment {
 
 		WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, getActivity(), postText, data, callback);
 
-		wst.addNameValuePair(TimedTask.UID, timedTask.getTime().toString());
+		wst.addNameValuePair(TimedTask.UID, timedTask.getUid() == null ? null : timedTask.getUid().toString());
 		wst.addNameValuePair(TimedTask.PLUG, new Character(timedTask.getPlug()).toString());
 		wst.addNameValuePair(TimedTask.FINISHED, new Boolean(timedTask.isFinished()).toString());
 		wst.addNameValuePair(TimedTask.STATUSTOSET, new Boolean(timedTask.isStatusToSet()).toString());

@@ -18,13 +18,18 @@ import at.dahuawa.homecontrolng.fragments.PlugsFragment;
 import at.dahuawa.homecontrolng.fragments.TempsFragment;
 import at.dahuawa.homecontrolng.fragments.TimingFragment;
 
+/**
+ * Main activity of home control NG
+ * 
+ * @author Stefan Huber
+ */
 public class MainActivity extends FragmentActivity {
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
 
 	CommuinicationUtils utils = CommuinicationUtils.getInstance();
-	
+
 	private PlugsFragment plugsFragement = null;
 	private TempsFragment tempsFragment = null;
 	private LogsFragment logsFragment = null;
@@ -35,25 +40,23 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(
+				getSupportFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 	}
-	
+
 	@Override
 	public void onRestart() {
 		super.onRestart();
 
-		if(plugsFragement != null){
+		if (plugsFragement != null) {
 			plugsFragement.loadData();
 		}
-		
-		if(tempsFragment != null){
+
+		if (tempsFragment != null) {
 			tempsFragment.loadData();
 		}
 	}
@@ -73,16 +76,15 @@ public class MainActivity extends FragmentActivity {
 			startActivityForResult(settingsIntent, 0);
 			finish();
 			break;
-		
-		
-	case R.id.menu_update:
-		tempsFragment.setData(getConnectionData());
-		tempsFragment.loadData();
-		plugsFragement.setData(getConnectionData());
-		plugsFragement.loadData();
-		break;
+
+		case R.id.menu_update:
+			tempsFragment.setData(getConnectionData());
+			tempsFragment.loadData();
+			plugsFragement.setData(getConnectionData());
+			plugsFragement.loadData();
+			break;
 		}
-	
+
 		return true;
 	}
 
@@ -94,36 +96,45 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			
+
 			if (position == 0) {
-				return new DashboardFragment(getConnectionData());
+				DashboardFragment dashboardFragment = new DashboardFragment();
+				dashboardFragment
+						.setArguments(getConnectionDataResourceBundle());
+				return dashboardFragment;
 			}
 
 			if (position == 1) {
-				plugsFragement = new PlugsFragment(getConnectionData());
+				plugsFragement = new PlugsFragment();
+				plugsFragement.setArguments(getConnectionDataResourceBundle());
 				return plugsFragement;
 			}
-			
+
 			if (position == 2) {
-				tempsFragment = new TempsFragment(getConnectionData());
+				tempsFragment = new TempsFragment();
+				tempsFragment.setArguments(getConnectionDataResourceBundle());
 				return tempsFragment;
 			}
-			
+
 			if (position == 3) {
-				logsFragment = new LogsFragment(getConnectionData());
+				logsFragment = new LogsFragment();
+				logsFragment.setArguments(getConnectionDataResourceBundle());
 				return logsFragment;
 			}
-			
+
 			if (position == 4) {
-				timingFragment = new TimingFragment(getConnectionData());
+				timingFragment = new TimingFragment();
+				timingFragment.setArguments(getConnectionDataResourceBundle());
 				return timingFragment;
 			}
 
-//			Fragment fragment = new DummySectionFragment();
-//			Bundle args = new Bundle();
-//			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-//			fragment.setArguments(args);
 			return null;
+		}
+
+		private Bundle getConnectionDataResourceBundle() {
+			Bundle data = new Bundle();
+			data.putSerializable("connectionData", getConnectionData());
+			return data;
 		}
 
 		@Override
@@ -149,35 +160,22 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-//	public static class DummySectionFragment extends Fragment {
-//
-//		public static final String ARG_SECTION_NUMBER = "section_number";
-//
-//		public DummySectionFragment() {
-//		}
-//
-//		@Override
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//			TextView textView = new TextView(getActivity());
-//			textView.setGravity(Gravity.CENTER);
-//			textView.setText("Tab "+Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER))+ " \nCOMING SOON!");
-//			return textView;
-//		}
-//	}
-
 	private HomeControlProps getConnectionData() {
 
 		HomeControlProps data = new HomeControlProps();
 
-		SharedPreferences prefs = getSharedPreferences("SettingsActivity", MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("SettingsActivity",
+				MODE_PRIVATE);
 		data.setServer_ip(prefs.getString(SettingsActivity.HOST_IP, ""));
 		String port = prefs.getString(SettingsActivity.HOST_PORT, "0");
 		data.setServer_port(Integer.parseInt(port.isEmpty() ? "0" : port));
-		String timeout = prefs.getString(SettingsActivity.CONNECNTION_TIME_OUT, "0");
+		String timeout = prefs.getString(SettingsActivity.CONNECNTION_TIME_OUT,
+				"0");
 		data.setTimeout(Integer.parseInt(timeout.isEmpty() ? "0" : timeout));
 		data.setUser(prefs.getString(SettingsActivity.USER_NAME, ""));
 		data.setPassword(prefs.getString(SettingsActivity.USER_PASSWORD, ""));
-		data.setDebugMode(prefs.getBoolean(SettingsActivity.ENHANCED_LOGGING, false));
+		data.setDebugMode(prefs.getBoolean(SettingsActivity.ENHANCED_LOGGING,
+				false));
 		return data;
 	}
 

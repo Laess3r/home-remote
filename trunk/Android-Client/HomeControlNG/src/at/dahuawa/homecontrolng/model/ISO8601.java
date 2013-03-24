@@ -28,13 +28,14 @@ public final class ISO8601 {
     public static Date toDate(final String iso8601string){
         String s = iso8601string.replace("Z", "+00:00");
         try {
-            s = s.substring(0, 22) + s.substring(23);
+            s = s.substring(0, 19) + s.substring(23);
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
         try {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(s);
 		} catch (ParseException e) {
+			e.printStackTrace();
 			return null;
 		}
     }

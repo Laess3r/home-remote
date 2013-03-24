@@ -26,12 +26,13 @@ public class TempsFragment extends Fragment {
 
 	private HomeControlProps data;
 
-	public TempsFragment(HomeControlProps data) {
-		this.data = data;
+	public TempsFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		data = (HomeControlProps) getArguments().getSerializable("connectionData");
 
 		View view = inflater.inflate(R.layout.fragment_temps, container, false);
 

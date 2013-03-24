@@ -1,15 +1,18 @@
 package at.dahuawa.homecontrolng.communication;
 
-public class HomeControlProps {
-	
+import java.io.Serializable;
+
+public class HomeControlProps implements Serializable {
+	private static final long serialVersionUID = -152657958183287387L;
+
 	private String server_ip;
 	private int server_port;
 	private String user;
 	private String password;
 	private int timeout;
 	private boolean debugMode;
-	
-	public HomeControlProps(){
+
+	public HomeControlProps() {
 		this.server_ip = null;
 		this.server_port = 0;
 		this.user = null;
@@ -17,8 +20,9 @@ public class HomeControlProps {
 		this.timeout = 0;
 		this.debugMode = false;
 	}
-	
-	public HomeControlProps(String server_ip, int server_port, String user, String password, int timeout, boolean debugMode){
+
+	public HomeControlProps(String server_ip, int server_port, String user,
+			String password, int timeout, boolean debugMode) {
 		this.server_ip = server_ip;
 		this.server_port = server_port;
 		this.user = user;

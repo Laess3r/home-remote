@@ -12,14 +12,18 @@ public class DashboardFragment extends Fragment {
 
 	private HomeControlProps data;
 
-	public DashboardFragment(HomeControlProps data) {
-		this.data = data;
+	public DashboardFragment() {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+		data = (HomeControlProps) getArguments().getSerializable(
+				"connectionData");
+
+		View view = inflater.inflate(R.layout.fragment_dashboard, container,
+				false);
 
 		return view;
 	}

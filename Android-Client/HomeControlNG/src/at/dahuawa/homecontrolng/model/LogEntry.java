@@ -1,5 +1,6 @@
 package at.dahuawa.homecontrolng.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -16,17 +17,17 @@ public class LogEntry {
 		this.timeStamp = new Date(System.currentTimeMillis());
 		this.text = "empty";
 	}
-	
+
 	public LogEntry(String logEntry) {
 		this.timeStamp = new Date(System.currentTimeMillis());
 		this.text = logEntry;
 	}
-	
+
 	public LogEntry(String logEntry, String timestamp) {
 		this.timeStamp = ISO8601.toDate(timestamp);
 		this.text = logEntry;
 	}
-	
+
 	public Date getTimeStamp() {
 		return timeStamp;
 	}
@@ -41,5 +42,12 @@ public class LogEntry {
 
 	public void setText(String logEntry) {
 		this.text = logEntry;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM, HH:mm");
+
+		return format.format(timeStamp) + ": " + text.replace('\n', ' ');
 	}
 }

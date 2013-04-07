@@ -38,13 +38,13 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 	}
 
 	private void doLogin() {
-		
+
 		view.getBtnLogin().setDisable(true);
 		view.getUserTextField().setDisable(true);
 		view.getPwBox().setDisable(true);
 
-		// TODO show loading circle :) 
-		
+		// TODO show loading circle :)
+
 		HomeConnection connection = new HomeConnection(this);
 
 		connection.testConnection(new ConnectionCallback() {
@@ -56,13 +56,14 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 					view.getActionTarget().setFill(Color.GREEN);
 					view.getActionTarget().setText("Logged in successfully");
 				} else {
-					if(result.contains("HTTP Status 401")){
-						view.getActionTarget().setText("Wrong username or password!");
-					}else{
+					if (result.contains("HTTP Status 401")) {
+						view.getActionTarget().setText(
+								"Wrong username or password!");
+					} else {
 						view.getActionTarget().setText("Login failed !");
 					}
 					view.getActionTarget().setFill(Color.FIREBRICK);
-					
+
 				}
 				Main.getMainController().enableMenuTree(success);
 				view.getBtnLogin().setDisable(success);
@@ -74,6 +75,9 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 			public void onFail(String errorMessage) {
 				view.getActionTarget().setFill(Color.FIREBRICK);
 				view.getActionTarget().setText("Login failed: " + errorMessage);
+				view.getBtnLogin().setDisable(false);
+				view.getUserTextField().setDisable(false);
+				view.getPwBox().setDisable(false);
 
 			}
 		});
@@ -103,12 +107,12 @@ public class LoginFormController implements IFController, IFLoginDataProvider {
 				view.getBtnLogin().setScaleY(1);
 			}
 		});
-		
+
 		EventHandler<KeyEvent> loginEvent = new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ENTER){
+				if (event.getCode() == KeyCode.ENTER) {
 					doLogin();
 				}
 			}

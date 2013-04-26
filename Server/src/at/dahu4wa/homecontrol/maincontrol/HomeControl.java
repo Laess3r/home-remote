@@ -47,7 +47,7 @@ public class HomeControl {
 
 	private Plug PLUG_A = new Plug('A', "Entertaiment", false);
 	private Plug PLUG_B = new Plug('B', "Leuchtschiene", false);
-	private Plug PLUG_C = new Plug('C', "E-Piano", false);
+	private Plug PLUG_C = new Plug('C', "Balkon", false);
 	private Plug PLUG_D = new Plug('D', "Schreibtisch", false);
 	private Plug PLUG_E = new Plug('E', "Ikea Dioder", false);
 	private Plug PLUG_X = new Plug('X', "Ambilight", false);

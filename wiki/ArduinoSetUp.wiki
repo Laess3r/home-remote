@@ -7,7 +7,6 @@ This is the most challenging part, because you have to wire-up some hardware and
 
 To send the signals to the remote plugs, we use the original remotes SAW-Module (the transmitter). Therefore the remote needs to be opened.
 
-  * Cut the trace where shown in the image below
   * Scrape up the trace pointing to the transmitter
   * Solder a piece of wire onto the trace
 

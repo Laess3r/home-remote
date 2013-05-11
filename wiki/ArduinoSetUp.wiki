@@ -1,5 +1,5 @@
+#summary Do the wiring and setup of the Arduino and the Remote Control
 #labels Featured
-#Do the wiring and setup of the Arduino
 
 This is the most challenging part, because you have to wire-up some hardware and use the Arduino IDE.
 

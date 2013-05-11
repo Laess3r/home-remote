@@ -13,3 +13,7 @@ To send the signals to the remote plugs, we use the original remotes SAW-Module 
 
 
 =TODO POST AN IMAGE HERE!!!=
+
+* Finished! *
+
+==Please continue with [http://code.google.com/p/home-remote/wiki/RaspberrySetUp Raspberry Server Set Up]==

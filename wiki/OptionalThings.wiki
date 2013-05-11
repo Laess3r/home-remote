@@ -1,4 +1,4 @@
-#summary Some cool thins for the Raspi, not related to [https://code.google.com/p/home-remote/ home-remote]
+#summary Some cool thins for the Raspi, not related to home-remote
 #labels Featured
 
 = Optional things for your raspberry =

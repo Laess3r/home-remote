@@ -1,3 +1,4 @@
 #summary Setup the Android Phone Application
+#labels Featured
 
 = Coming soon!=

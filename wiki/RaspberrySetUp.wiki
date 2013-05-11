@@ -1,10 +1,10 @@
 #labels Featured
 = Initial raspberry setup =
 
-  * Download Debian Wheezy ([http://www.raspberrypi.org/downloads download])
+  * Download Debian Wheezy or Raspian ([http://www.raspberrypi.org/downloads download])
   * Install it using dd / Win32 diskimager (found on raspberry dl page)
   * Raspi should be accessable via SSH
-  * Make the first setup of Raspberry (Overclocking it is recommended)
+  * Make the first setup of Raspberry as usual
   * Then Run the following lines of code:
 
 They install arduino drivers, map the port to a supported name, installs java and samba

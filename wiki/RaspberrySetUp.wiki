@@ -101,4 +101,4 @@ sudo update-rc.d tomcat defaults
 
 * Finished! *
 
-==Please continue with [https://code.google.com/p/home-remote/wiki/RaspberrySetUp Raspberry Set Up]==
+==Please continue with [http://code.google.com/p/home-remote/wiki/AndroidSetUp Android App Set Up]==

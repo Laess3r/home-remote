@@ -1,4 +1,6 @@
+#summary Some cool thins for the Raspi, not related to [https://code.google.com/p/home-remote/ home-remote]
 #labels Featured
+
 = Optional things for your raspberry =
 
 *sudo raspi-config* let you start the initial config at every time

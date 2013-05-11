@@ -1,4 +1,6 @@
+#summary Setup Raspi and Tomcat Application
 #labels Featured
+
 = Initial raspberry setup =
 
   * Download Debian Wheezy or Raspian ([http://www.raspberrypi.org/downloads download])

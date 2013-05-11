@@ -10,9 +10,9 @@ To send the signals to the remote plugs, we use the original remotes SAW-Module 
   * Scrape up the trace pointing to the transmitter
   * Solder a piece of wire onto the trace
 
+https://home-remote.googlecode.com/svn/trunk/Server/resource/images/Saw.jpg
 
-=TODO POST AN IMAGE HERE!!!=
 
-* Finished! *
+
 
 ==Please continue with [http://code.google.com/p/home-remote/wiki/RaspberrySetUp Raspberry Server Set Up]==

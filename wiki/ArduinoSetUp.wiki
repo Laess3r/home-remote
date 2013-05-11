@@ -3,7 +3,7 @@
 
 This is the most challenging part, because you have to wire-up some hardware and use the Arduino IDE.
 
-=Prepare the remote=
+==1. Prepare the remote==
 
 To send the signals to the remote plugs, we use the original remotes SAW-Module (the transmitter). Therefore the remote needs to be opened.
 
@@ -12,7 +12,20 @@ To send the signals to the remote plugs, we use the original remotes SAW-Module 
 
 https://home-remote.googlecode.com/svn/trunk/Server/resource/images/Saw.jpg
 
+==2. Connect Remote to Arduino==
 
+TODO check the port in the arduino script
 
+==3. Connect Temp Sensors==
+
+==4. Install Arduino Software==
+
+  * pins
+  * display 
+  * temp sensors
+
+==5. Connect to Raspberry==
+
+  Simply connect via USB :)
 
 ==Please continue with [http://code.google.com/p/home-remote/wiki/RaspberrySetUp Raspberry Server Set Up]==

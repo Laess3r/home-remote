@@ -18,6 +18,8 @@ TODO check the port in the arduino script
 
 ==3. Connect Temp Sensors==
 
+TODO manual
+
 ==4. Install Arduino Software==
 
   * pins
